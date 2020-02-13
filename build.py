@@ -15,7 +15,7 @@ import random
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from scipy.stats import  t
+from scipy.stats import t, ttest_ind
 import math
 
 class Build(object):
@@ -58,33 +58,88 @@ def getShape(file):
             if "#define M" in line:
                 col = int(re.sub("\D", "", line))
     return row, col
-    
-def vis(compilers, dir_to_data, save_pic = False, nloop = 10):
-    datas = []
-    df = pd.DataFrame(columns=compilers)
-    for cpl in compilers:
-        path = dir_to_data + "/" + cpl + ".txt"
-        data = np.loadtxt(path)
-        datas.append(data)
-        df[cpl] = data
 
-    plt.title('{} times matrix computation Benchmark'.format(nloop))
-    print(df.describe())
-    ax = df.boxplot(showmeans=True)
-    ax.set_ylabel('Micro-Second')
-    ax.set_xlabel('Compiler Names')
-    if save_pic:
-        if not os.path.exists("pics"):
-            os.makedirs("pics")
-        plt.savefig('pics/result.png')
-    plt.show()
 
-def tTest(sample):
-    sample_mean = np.mean(sample)
-    sample_std = np.std(sample, dtype=np.float64, ddof=1)
-    abs_t = math.fabs( sample_mean / (sample_std / math.sqrt(sample_len)) )
-    t_alpha_percentile = t.ppf(1 - alpha / 2, df)
+class Visualization:
+    def __init__(self, data):
+        self.data = data
+
     
+    def benchmark(self, compilers, dir_to_data, save_pic = False, nloop = 10):
+        plt.title('{} times matrix computation Benchmark'.format(nloop))
+
+        print(self.data.describe())
+        print("\n")
+        ax = self.data.boxplot(showmeans=True, figsize=(6,8))
+        ax.set_ylabel('Micro-Second')
+        ax.set_xlabel('Compiler Names')
+        plt.tight_layout()
+        if save_pic:
+            if not os.path.exists("pics"):
+                os.makedirs("pics")
+            plt.savefig('pics/result.png', dpi = 600)
+        plt.show()
+
+    def t_test(self, cplName1, cplName2, alpha = 0.05, save_pic = True):
+        
+        print("Hypothesis 0: compiler {0} is faster or equal to compiler {1}, \nHypothesis 1: compiler {0} is slower than compiler {1}".format(cplName1, cplName2))
+        # print("Hypothesis 0: compiler {0} is >= to compiler {1}, \nHypothesis 1: compiler {0} is < compiler {1}".format(cplName1, cplName2))
+        t_value, p = ttest_ind(self.data[cplName1], self.data[cplName2], equal_var=False)
+
+        diff = self.data[cplName1] - self.data[cplName2]
+        df = len(self.data)-1 # degree of freedom
+
+        t_alpha_percentile = t.ppf(1 - alpha / 2, df)
+
+        print("P value is {}, t value is {}".format(p/2, t_value))
+        if (p/2 < alpha and t_value > 0):
+            print("REJECT the null hypothesis\n")
+        else:
+            print("ACCEPT the null hypothesis\n")
+
+        plt.figure(0)
+        rv = t(df)
+        limit = np.minimum(rv.dist.b, 5)
+        x = np.linspace(-1 * limit, limit)
+        h = plt.plot(x, rv.pdf(x), label = 'Student\'s t distribution')
+        plt.xlabel('x')
+        plt.ylabel('t(x)')
+        plt.title('Difference significance test -- {} v.s. {}'.format(cplName1, cplName2))
+        plt.grid(True)
+        plt.axvline(x = t_alpha_percentile, ymin = 0, ymax = 0.095, 
+                linewidth=2, color='r', label = '(1-$\\alpha$ / 2) percentile')
+        plt.axvline(x = t_value, ymin = 0, ymax = 0.6, 
+                linewidth=2, color='g', label = 't value')
+
+        plt.annotate('(1-$\\alpha$ / 2) percentile', xy = (t_alpha_percentile, 0.05),
+                xytext=(t_alpha_percentile + 0.5, 0.09), arrowprops=dict(facecolor = 'black', shrink = 0.05),)
+        plt.annotate('t value', xy = (t_value, 0.26),
+                xytext=(t_value + 0.5, 0.30), arrowprops=dict(facecolor = 'black', shrink = 0.05),)
+
+        leg = plt.legend()
+
+        frame = leg.get_frame()
+        frame.set_facecolor('0.80')
+        for i in leg.get_texts():
+            i.set_fontsize('small')
+
+        for l in leg.get_lines():
+            l.set_linewidth(1.5)
+
+        diff_mean = np.mean(diff)
+        diff_std = np.std(diff.values, dtype=np.float64, ddof=1)
+
+        normalized_sample = (diff - diff_mean) / (diff_std / math.sqrt(len(diff)))
+        plt.plot(normalized_sample, [0]*len(normalized_sample), 'ro')
+        plt.tight_layout()
+        if save_pic:
+            if not os.path.exists("pics"):
+                os.makedirs("pics")
+            plt.savefig('pics/{}_{}.png'.format(cplName1, cplName2), dpi = 200)
+        plt.close()
+        # plt.show()
+    
+
 
 
 if __name__ == "__main__":
@@ -95,13 +150,14 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--savepic', action='store_const',
                     const=True, default=False)
     # parser.add_argument('--justPlot', type=bool, default = False)
-    parser.add_argument('-j', '--justPlot', action='store_const',
+    parser.add_argument('-jp', '--justPlot', action='store_const',
                     const=True, default=False)
+
     args = parser.parse_args()
     
     # Config
     mainFile = "main.c"
-    compilers = ["icc", "gcc", "clang", "javac"]
+    compilers = ["javac", "icc", "gcc", "clang"]
     MAX_ROW, MAX_COL = getShape(mainFile)
 
     dir_to_data = "data"
@@ -113,4 +169,16 @@ if __name__ == "__main__":
             build = Build(mainFile, args.nloop, cpl, dir_to_data)
             build.run(random.randint(0,MAX_ROW-1), random.randint(0,MAX_COL-1), args.debug)
     
-    vis(compilers, dir_to_data, args.savepic, args.nloop)
+    df = pd.DataFrame(columns=compilers)
+    for cpl in compilers:
+        path = dir_to_data + "/" + cpl + ".txt"
+        data = np.loadtxt(path)
+        df[cpl] = data
+    
+    vis = Visualization(df)
+    vis.benchmark(compilers, dir_to_data, args.savepic, args.nloop)
+
+    for i in range(len(compilers)):
+        for j in range(i+1, len(compilers)):
+            vis.t_test(compilers[i], compilers[j], 0.05, args.savepic)
+    
