@@ -1,3 +1,14 @@
+<!--
+ * @Author: Lin Sinan
+ * @Github: https://github.com/linsinan1995
+ * @Email: mynameisxiaou@gmail.com
+ * @LastEditors: Lin Sinan
+ * @Description: 
+*               
+*               
+*               
+ -->
+ 
 # Project: Comparaison des performances de codes de calculs scientifiques : C++ versus Java
 
 Project Address: http://i3s.unice.fr/master-info/ter/TER-S2-liste-des-sujets-2020/#comparaison-des-performances-de-codes-de-calculs-scientifiques--c-versus-java
@@ -81,7 +92,3 @@ Do visualization and statistical analysis only(data obtained from benchmark logs
 python build.py -js
 ```
 
-Do visualization and statistical analysis only(data obtained from benchmark logs), and save benchmark/analysis pictures
-```shell
-python build.py -js -s
-```

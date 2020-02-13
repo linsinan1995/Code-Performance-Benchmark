@@ -77,8 +77,9 @@ class Visualization:
         if save_pic:
             if not os.path.exists("pics"):
                 os.makedirs("pics")
-            plt.savefig('pics/result.png', dpi = 600)
+            plt.savefig('pics/result.png', dpi = 200)
         plt.show()
+        return self.data.describe().to_html().replace("\n"," ")
 
     def t_test(self, cplName1, cplName2, alpha = 0.05, save_pic = True):
         
@@ -135,7 +136,7 @@ class Visualization:
         if save_pic:
             if not os.path.exists("pics"):
                 os.makedirs("pics")
-            plt.savefig('pics/{}_{}.png'.format(cplName1, cplName2), dpi = 200)
+            plt.savefig('pics/{}_{}.png'.format(cplName1, cplName2), dpi = 150)
         plt.close()
         # plt.show()
     
@@ -157,7 +158,7 @@ if __name__ == "__main__":
     
     # Config
     mainFile = "main.c"
-    compilers = ["javac", "icc", "gcc", "clang"]
+    compilers = ["javac", "gcc", "clang", "icc"]
     MAX_ROW, MAX_COL = getShape(mainFile)
 
     dir_to_data = "data"
@@ -176,7 +177,7 @@ if __name__ == "__main__":
         df[cpl] = data
     
     vis = Visualization(df)
-    vis.benchmark(compilers, dir_to_data, args.savepic, args.nloop)
+    html = vis.benchmark(compilers, dir_to_data, args.savepic, args.nloop)
 
     for i in range(len(compilers)):
         for j in range(i+1, len(compilers)):
