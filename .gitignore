@@ -1,4 +1,6 @@
 .DS_Store
 .vscode
-Matrix.class
+*.class
 build/
+test.py
+a.out
