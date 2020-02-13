@@ -25,13 +25,13 @@ Project Address: http://i3s.unice.fr/master-info/ter/TER-S2-liste-des-sujets-202
 
 **N.B.** In macOs, `gcc` is actually an alias of `clang`
 
-**N.B.** compiler optimization command `-O3`
-
-
 ```shell
 gcc -v
 # Apple LLVM version 10.0.0 (clang-1000.10.44.4)
 ```
+
+**N.B.** compiler optimization command `-O3`
+
 
 <br>
 
