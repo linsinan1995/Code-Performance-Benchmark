@@ -1,0 +1,6 @@
+{
+    "compilers" : ["javac", "clang", "gcc-8", "icc"],
+    "cpp-souce-code" : "main.cpp",
+    "cpp-compiler-config": "-xc++ -lstdc++ -std=c++17 -O3"
+}
+

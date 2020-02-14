@@ -5,8 +5,11 @@
 @LastEditors  : Lin Sinan
 @Description: 
               
-              
-              
+gcc -xc++ -lstdc++ -shared-libgcc -O3 -std=c++17 main.cpp
+gcc -xc++ -lstdc++ -std=c++17 -O3 main.cpp       
+clang -std=c++17
+
+gcc -O3 main.c           
 '''
 import sys,os
 import re
@@ -17,14 +20,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import t, ttest_ind
 import math
+import json
 
 class Build(object):
-    def __init__(self, filename, nTimes, compiler, output):
+    def __init__(self, filename, nTimes, compiler, output, parameter):
         self.nTimes = nTimes
         self.compiler = compiler
-        self.output = output + "/" + compiler + ".txt"
+        self.output = output + compiler + ".txt"
         if compiler != "javac":
-            os.system("{0} -O3 -o execute_{0} {1}".format(compiler, filename))
+            os.system("{0} {2} -o execute_{0} {1}".format(compiler, filename, parameter))
             if not os.path.exists("build"):
                 os.makedirs("build")
             # print("mv execute_{0} build/execute_{0}".format(compiler))
@@ -59,20 +63,29 @@ def getShape(file):
                 col = int(re.sub("\D", "", line))
     return row, col
 
+def roundInt(_max):
+    max_int = int(_max)
+    nDigits = len(str(max_int))
+    ylim_max = round(max_int/10**(nDigits-1)+0.5, 0) * 10 ** (nDigits-1)
+    return ylim_max
 
 class Visualization:
     def __init__(self, data):
         self.data = data
 
-    
-    def benchmark(self, compilers, dir_to_data, save_pic = False, nloop = 10):
-        plt.title('{} times matrix computation Benchmark'.format(nloop))
+    def benchmark(self, compilers, dir_to_data, save_pic = False):
+        plt.title('{} times matrix computation Benchmark'.format(len(self.data)))
 
         print(self.data.describe())
         print("\n")
         ax = self.data.boxplot(showmeans=True, figsize=(6,8))
         ax.set_ylabel('Micro-Second')
         ax.set_xlabel('Compiler Names')
+        
+        _, _max = plt.ylim()
+        plt.ylim(0, _max)
+        # plt.ylim(0,roundInt(self.data.max().max()))
+        # plt.yticks(np.linspace(*(plt.ylim()),5))
         plt.tight_layout()
         if save_pic:
             if not os.path.exists("pics"):
@@ -155,19 +168,26 @@ if __name__ == "__main__":
                     const=True, default=False)
 
     args = parser.parse_args()
-    
-    # Config
-    mainFile = "main.c"
-    compilers = ["javac", "gcc", "clang", "icc"]
-    MAX_ROW, MAX_COL = getShape(mainFile)
 
-    dir_to_data = "data"
+    if args.nloop <= 1:
+        args.nloop = 2
+        
+    # Config
+    dir_to_data = "data/"
+    
+    with open('config.json') as json_file:
+        config = json.load(json_file)
+
+
+    compilers, cpp_file, cpp_config = config.values()
+    MAX_ROW, MAX_COL = getShape(cpp_file)
+
     if not os.path.exists(dir_to_data):
         os.makedirs(dir_to_data)
 
     if not args.justPlot:
         for cpl in compilers:
-            build = Build(mainFile, args.nloop, cpl, dir_to_data)
+            build = Build(cpp_file, args.nloop, cpl, dir_to_data, cpp_config)
             build.run(random.randint(0,MAX_ROW-1), random.randint(0,MAX_COL-1), args.debug)
     
     df = pd.DataFrame(columns=compilers)
@@ -177,7 +197,7 @@ if __name__ == "__main__":
         df[cpl] = data
     
     vis = Visualization(df)
-    html = vis.benchmark(compilers, dir_to_data, args.savepic, args.nloop)
+    html = vis.benchmark(compilers, dir_to_data, args.savepic)
 
     for i in range(len(compilers)):
         for j in range(i+1, len(compilers)):

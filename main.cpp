@@ -14,8 +14,10 @@
  *               
  */
 
-#include <sys/time.h>
+#include <chrono>
 #include "include/tool.h"
+
+using namespace std;
 
 #define N 1200
 #define M 1000
@@ -26,7 +28,7 @@ float A[N][P];
 float B[P][M];
 float C[N][M];
 
-void initialize() {
+inline void initialize() {
     int i,j;
     for (i = 0; i < N; i++) {
         for (j = 0; j < P; j++) {
@@ -41,19 +43,6 @@ void initialize() {
     }
 }
 
-// void initialize(char* filepath) {
-//     for (int i = 0; i < N; i++) {
-//         for (int j = 0; j < M; j++) {
-//             C[i][j] = getFloat();
-//         }
-//     }
-
-//     for (int i = 0; i < N; i++) {
-//         for (int j = 0; j < P; j++) {
-//             A[i][j] = getFloat();
-//         }
-//     }
-// }
 
 int main(int argc, char *argv[])
 {
@@ -72,10 +61,8 @@ int main(int argc, char *argv[])
     
     srand((unsigned)time(NULL));
     initialize();
-    struct timeval start, end;
+    auto start = chrono::high_resolution_clock::now();
 
-
-    gettimeofday(&start, NULL);
     int i,j,k;
     for (i = 0; i < N; i++){
         for (j = 0; j < M; j++){
@@ -84,17 +71,17 @@ int main(int argc, char *argv[])
             }
         }       
     }
-    gettimeofday(&end, NULL);
 
+    auto end = chrono::high_resolution_clock::now();
+    float temps_execution = chrono::duration<float, nano>(end-start).count();
     
-    float temps_execution= (float) ((end.tv_sec - start.tv_sec) *1000000 + end.tv_usec - start.tv_usec);
     printf("%2f\n", C[row][col]);
     printf("%2f\n", A[row][col]);
     
     // display(C, N, M);
     // display(A, N, P);
     // display(B, P, M);
-    printf("Timer: \n%2f\n", temps_execution);
+    printf("Timer: \n%2f\n", temps_execution/1000.0);
     
     return 0;
 }
