@@ -15,31 +15,24 @@ Project Address: http://i3s.unice.fr/master-info/ter/TER-S2-liste-des-sujets-202
 
 # Project Aims
 
-- Write a library of matrix calculation codes in JAVA and C++ , then compare the performance between the two languages.
+- Write a library of matrix calculation codes in JAVA and C++, then compare the performance between the two languages.
 
 - Optimize the performance of the two codes using the compiler compilation options for C ++ and the Java options.
 
 - Compare the advantages and disadvantages between C ++ and Java in our context.
 
+# Environment
 
-# Notice
+## macOS
 
-- Caches info
-
-the matrix size (1200 x 1000) satisfies the requirement(choisissez une taille de matrice qui a au minimum le double de la capacit ́e du plus grand cache de votre machine)
-```shell
-sysctl -a | grep cachesize
-# hw.cachesize: 8589934592 32768 262144 3145728 0 0 0 0 0 0
-# hw.l1icachesize: 32768
-# hw.l1dcachesize: 32768
-# hw.l2cachesize: 262144
-# hw.l3cachesize: 3145728
+```
+MacBook Pro (Retina, 13-inch, Early 2015)
+2.7 GHz Intel Core i5
+8 GB 1867 MHz DDR3
 ```
 
-- In macOs, gcc is actually an alias of clang. For using gcc, we should `brew install gcc`, and then `gcc-8` is the gcc compiler for macOS.
-
+compilers:
 ```shell
-gcc -v
 # Apple LLVM version 10.0.0 (clang-1000.10.44.4)
 clang -v
 # Apple LLVM version 10.0.0 (clang-1000.10.44.4)
@@ -51,7 +44,27 @@ javac -version
 # javac 1.8.0_231
 ```
 
-- compiler optimization command `-xc++ -lstdc++ -std=c++17 -O3`. `-xc++ -lstdc++` is for compiler to find headers/libs of c++
+# Notice
+
+- Caches info
+
+the matrix size (1200 x 1000) satisfies the requirement(choisissez une taille de matrice qui a au minimum le double de la capacité du plus grand cache de votre machine)
+```shell
+sysctl -a | grep cachesize
+# hw.cachesize: 8589934592 32768 262144 3145728 0 0 0 0 0 0
+# hw.l1icachesize: 32768
+# hw.l1dcachesize: 32768
+# hw.l2cachesize: 262144
+# hw.l3cachesize: 3145728
+```
+
+- In macOs, gcc is actually an alias of clang. For using gcc, we should run `brew install gcc`, and then `gcc-8` is the gcc compiler for macOS.
+
+```shell
+gcc -v
+```
+
+- compiler optimization command `-xc++ -lstdc++ -std=c++17 -O3`. `-xc++ -lstdc++` is for compilers to find headers/libs of c++
 
 
 <br>
@@ -75,6 +88,9 @@ Conclusion: ICC is significantly faster than any other C++/C compilers. In addit
 
 
 ## 2.2.Statistical inference
+
+As for statistical inference, we use paired sample T-test. It is a tool to determine whether the mean of two samples sets is different. We use upper-tailed test, thus we can figure out which compilers/languages is slower(use more time) in terms of their executing time. 
+
 
 ![javac-clang](pics/javac_clang.png)
 
@@ -110,17 +126,18 @@ compiler clang is statistically slower than compiler gcc.
 
 # 3.Usage
 
-# 3.1.Modefy json
+## 3.1.Modefy json
 
 e.g.change the names of compilers if necessary.
 
-```json
+```
 {
     "compilers" : ["javac", "clang", "gcc-8", "icc"],
     ...
 }
 ```
 
+## 3.2.Run the experiment
 ```shell
 python build.py [-h] [-n NLOOP] [-d] [-s] [-jp]
 ```
