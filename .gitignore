@@ -5,5 +5,5 @@ build/
 test.py
 a.out
 main.c
-data_c/
-pics_c/
+data/
+pics/

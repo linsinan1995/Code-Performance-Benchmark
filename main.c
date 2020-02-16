@@ -1,4 +1,4 @@
-/*
+ /*
  * @Author: Lin Sinan
  * @Github: https://github.com/linsinan1995
  * @Email: mynameisxiaou@gmail.com
@@ -17,9 +17,9 @@
 #include <sys/time.h>
 #include "include/tool.h"
 
-#define N 1200
-#define M 1000
-#define P 800
+#define N 4000
+#define M 5000
+#define P 500
 
 
 float A[N][P];

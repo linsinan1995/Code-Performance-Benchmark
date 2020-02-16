@@ -1,3 +1,6 @@
+#!/usr/bin/python
+
+
 '''
 @Author: Lin Sinan
 @Github: https://github.com/linsinan1995
@@ -21,37 +24,50 @@ import matplotlib.pyplot as plt
 from scipy.stats import t, ttest_ind
 import math
 import json
+import subprocess as sp
 
 class Build(object):
-    def __init__(self, filename, nTimes, compiler, output, parameter):
+    def __init__(self, filename, nTimes, compiler, output, parameter, debug = False):
         self.nTimes = nTimes
         self.compiler = compiler
         self.output = output + compiler + ".txt"
-        if compiler != "javac":
-            os.system("{0} {2} -o execute_{0} {1}".format(compiler, filename, parameter))
-            if not os.path.exists("build"):
+        self.debug = debug
+        if not os.path.exists("build"):
                 os.makedirs("build")
-            # print("mv execute_{0} build/execute_{0}".format(compiler))
-            os.system("mv execute_{0} build/execute_{0}".format(compiler))
+
+        if compiler != "javac":
+            if self.debug:
+                print("{0} {2} -o execute_{0} {1}".format(compiler, filename, parameter))
+            self.__compile("{0} {2} -o execute_{0} {1}".format(compiler, filename, parameter))
+            self.__compile("mv execute_{0} build/execute_{0}".format(compiler))
         else:
-            os.system("javac Matrix.java")
-            
-    def run(self, nCol, nRow, debug = False):
-        os.system("rm {}".format(self.output))
-        for i in range(self.nTimes):
             if debug:
+                 print("javac Matrix.java ")
+            self.__compile("javac Matrix.java ")
+            
+    def run(self, MAX_ROW, MAX_COL):
+        if os.path.exists(self.output):
+            self.__compile("rm {}".format(self.output))
+        for i in range(self.nTimes):
+            nCol, nRow = random.randint(0,MAX_ROW-1), random.randint(0,MAX_COL-1)
+            if self.debug :
                 if self.compiler != "javac":
-                    os.system("./build/execute_{} {} {}  >> {}"
-                        .format(self.compiler, nCol, nRow, self.output))
+                    print("./build/execute_{} {} {}  >> {}" .format(self.compiler, nCol, nRow, self.output))
+                    self.__compile("./build/execute_{} {} {}  >> {}" .format(self.compiler, nCol, nRow, self.output))
                 else:
-                    os.system("java Matrix >> {}".format(self.output))
+                    print("java Matrix {} {} >> {}".format(nCol, nRow, self.output))
+                    self.__compile("java Matrix {} {} >> {}".format(nCol, nRow, self.output))
             else:
                 if self.compiler != "javac":
-                    os.system("./build/execute_{} {} {} | grep -A 1 Timer | grep ^[0-9] >> {}"
+                    self.__compile("./build/execute_{} {} {} | grep -A 1 Timer | grep ^[0-9] >> {}"
                         .format(self.compiler, nCol, nRow, self.output))
                 else:
-                    os.system("java Matrix {} {} | grep -A 1 Timer | grep ^[0-9] >> {}"
-                        .format(nCol, nRow, self.output))
+                    self.__compile("java Matrix {} {} | grep -A 1 Timer | grep ^[0-9] >> {}" .format(nCol, nRow, self.output))
+    
+    def __compile(self, commond):
+        sp.call(commond, shell=True)        
+
+
 
 def getShape(file):
     with open(file, "r") as f:
@@ -70,10 +86,11 @@ def roundInt(_max):
     return ylim_max
 
 class Visualization:
-    def __init__(self, data):
+    def __init__(self, data, dir_to_pics):
         self.data = data
+        self.dir_to_pics = dir_to_pics
 
-    def benchmark(self, compilers, dir_to_data, save_pic = False):
+    def benchmark(self, compilers , save_pic = False):
         plt.title('{} times matrix computation Benchmark'.format(len(self.data)))
 
         print(self.data.describe())
@@ -88,9 +105,9 @@ class Visualization:
         # plt.yticks(np.linspace(*(plt.ylim()),5))
         plt.tight_layout()
         if save_pic:
-            if not os.path.exists("pics"):
-                os.makedirs("pics")
-            plt.savefig('pics/result.png', dpi = 200)
+            if not os.path.exists(self.dir_to_pics):
+                os.makedirs(self.dir_to_pics)
+            plt.savefig(self.dir_to_pics + '/result.png', dpi = 200)
         plt.show()
         return self.data.describe().to_html().replace("\n"," ")
 
@@ -147,9 +164,9 @@ class Visualization:
         plt.plot(normalized_sample, [0]*len(normalized_sample), 'ro')
         plt.tight_layout()
         if save_pic:
-            if not os.path.exists("pics"):
-                os.makedirs("pics")
-            plt.savefig('pics/{}_{}.png'.format(cplName1, cplName2), dpi = 150)
+            if not os.path.exists(self.dir_to_pics):
+                os.makedirs(self.dir_to_pics)
+            plt.savefig('{}/{}_{}.png'.format(self.dir_to_pics, cplName1, cplName2), dpi = 150)
         plt.close()
         # plt.show()
     
@@ -169,17 +186,14 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.nloop <= 1:
+    if args.nloop <= 1 and  not  args.debug:
         args.nloop = 2
         
     # Config
-    dir_to_data = "data/"
-    
     with open('config.json') as json_file:
         config = json.load(json_file)
 
-
-    compilers, cpp_file, cpp_config = config.values()
+    compilers, cpp_file, cpp_config, dir_to_data, dir_to_pics = config.values()
     MAX_ROW, MAX_COL = getShape(cpp_file)
 
     if not os.path.exists(dir_to_data):
@@ -187,19 +201,21 @@ if __name__ == "__main__":
 
     if not args.justPlot:
         for cpl in compilers:
-            build = Build(cpp_file, args.nloop, cpl, dir_to_data, cpp_config)
-            build.run(random.randint(0,MAX_ROW-1), random.randint(0,MAX_COL-1), args.debug)
-    
-    df = pd.DataFrame(columns=compilers)
-    for cpl in compilers:
-        path = dir_to_data + "/" + cpl + ".txt"
-        data = np.loadtxt(path)
-        df[cpl] = data
-    
-    vis = Visualization(df)
-    html = vis.benchmark(compilers, dir_to_data, args.savepic)
+            build = Build(cpp_file, args.nloop, cpl, dir_to_data, cpp_config, args.debug)
+            build.run(MAX_ROW, MAX_COL)
+    if not args.debug:
+        df = pd.DataFrame(columns=compilers)
+        for cpl in compilers:
+            path = dir_to_data + "/" + cpl + ".txt"
+            # print(path)
+            data = np.loadtxt(path)
+            # print(data)
+            df[cpl] = data
+        
+        vis = Visualization(df, dir_to_pics)
+        html = vis.benchmark(compilers, args.savepic)
 
-    for i in range(len(compilers)):
-        for j in range(i+1, len(compilers)):
-            vis.t_test(compilers[i], compilers[j], 0.05, args.savepic)
-    
+        for i in range(len(compilers)):
+            for j in range(i+1, len(compilers)):
+                vis.t_test(compilers[i], compilers[j], 0.05, args.savepic)
+        

@@ -19,9 +19,9 @@
 
 using namespace std;
 
-#define N 1200
-#define M 1000
-#define P 800
+#define N 4000
+#define M 5000
+#define P 2000
 
 
 float A[N][P];
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 {
     if (argc != 3) {
         printf("Require 2 parameters, but it gets %d.\n", argc-1);
-        return 1;
+        exit(1);
     }
     
     int row = atoi(argv[1]);
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     if (row >= N || col >= M) {
         printf("Index is out of the matrix size\n");
-        return 2;
+        exit(2);
     }
     
     srand((unsigned)time(NULL));
