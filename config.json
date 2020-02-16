@@ -1,6 +1,8 @@
 {
-    "compilers" : ["javac", "clang", "gcc-8", "icc"],
+    "compilers" : ["javac", "clang++", "g++", "icpc"],
     "cpp-souce-code" : "main.cpp",
-    "cpp-compiler-config": "-xc++ -lstdc++ -std=c++17 -O3"
+    "cpp-compiler-config": "-std=c++17 -O3",
+    "dir-to-data":"data-high/",
+    "dir-to-pics":"pics-high/"
 }
 
