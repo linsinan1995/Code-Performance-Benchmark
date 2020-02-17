@@ -1,8 +1,9 @@
 {
-    "compilers" : ["javac", "clang++", "g++", "icpc"],
+    "compilers" : ["javac", "clang++", "g++-8", "icpc"],
     "cpp-souce-code" : "main.cpp",
-    "cpp-compiler-config": "-std=c++17 -O3",
-    "dir-to-data":"data-high/",
-    "dir-to-pics":"pics-high/"
+    "const-config": "-std=c++17",
+    "cpp-compiler-config": ["-O3"],
+    "output-names": ["javac", "clang", "gcc", "icc"],
+    "dir-to-data":"data/data-lab1/",
+    "dir-to-pics":"pics/pics-lab1/"
 }
-

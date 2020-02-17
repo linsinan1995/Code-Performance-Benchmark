@@ -19,9 +19,10 @@
 
 using namespace std;
 
-#define N 4000
-#define M 5000
-#define P 2000
+#define N 1500
+#define M 1200
+#define P 500
+
 
 
 float A[N][P];
@@ -62,8 +63,10 @@ int main(int argc, char *argv[])
     srand((unsigned)time(NULL));
     initialize();
     auto start = chrono::high_resolution_clock::now();
-
+ 
+ 
     int i,j,k;
+#pragma noparallel
     for (i = 0; i < N; i++){
         for (j = 0; j < M; j++){
            for (k = 0; k< P; k++){

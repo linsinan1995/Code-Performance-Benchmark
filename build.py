@@ -27,43 +27,44 @@ import json
 import subprocess as sp
 
 class Build(object):
-    def __init__(self, filename, nTimes, compiler, output, parameter, debug = False):
+    def __init__(self, filename, nTimes, compiler, output_dir, parameter, output, debug = False):
         self.nTimes = nTimes
         self.compiler = compiler
-        self.output = output + compiler + ".txt"
+        self.output_path = output_dir + output + ".txt"
+        self.output = output
         self.debug = debug
         if not os.path.exists("build"):
                 os.makedirs("build")
-
+        
         if compiler != "javac":
+            if os.path.exists("build/execute_{0}".format(output)):
+                self.__compile("rm build/execute_{0}".format(output))
             if self.debug:
-                print("{0} {2} -o execute_{0} {1}".format(compiler, filename, parameter))
-            self.__compile("{0} {2} -o execute_{0} {1}".format(compiler, filename, parameter))
-            self.__compile("mv execute_{0} build/execute_{0}".format(compiler))
+                print("{} {} -o execute_{} {}".format(compiler, parameter, output, filename))
+            self.__compile("{} {} -o execute_{} {}".format(compiler, parameter, output, filename))
+            self.__compile("mv execute_{0} build/execute_{0}".format(output))
         else:
             if debug:
                  print("javac Matrix.java ")
+            if os.path.exists("Matrix.class"):
+                self.__compile("rm Matrix.class")
             self.__compile("javac Matrix.java ")
             
     def run(self, MAX_ROW, MAX_COL):
-        if os.path.exists(self.output):
-            self.__compile("rm {}".format(self.output))
+        if os.path.exists(self.output_path):
+            self.__compile("rm {}".format(self.output_path))
+        
         for i in range(self.nTimes):
             nCol, nRow = random.randint(0,MAX_ROW-1), random.randint(0,MAX_COL-1)
-            if self.debug :
-                if self.compiler != "javac":
-                    print("./build/execute_{} {} {}  >> {}" .format(self.compiler, nCol, nRow, self.output))
-                    self.__compile("./build/execute_{} {} {}  >> {}" .format(self.compiler, nCol, nRow, self.output))
+            if self.compiler != "javac":
+                if self.debug: 
+                    print("./build/execute_{} {} {}  >> {}" .format(self.output, nCol, nRow, self.output_path))
+                    self.__compile("./build/execute_{} {} {}  >> {}" .format(self.output, nCol, nRow, self.output_path))
                 else:
-                    print("java Matrix {} {} >> {}".format(nCol, nRow, self.output))
-                    self.__compile("java Matrix {} {} >> {}".format(nCol, nRow, self.output))
-            else:
-                if self.compiler != "javac":
                     self.__compile("./build/execute_{} {} {} | grep -A 1 Timer | grep ^[0-9] >> {}"
-                        .format(self.compiler, nCol, nRow, self.output))
-                else:
-                    self.__compile("java Matrix {} {} | grep -A 1 Timer | grep ^[0-9] >> {}" .format(nCol, nRow, self.output))
-    
+                        .format(self.output, nCol, nRow, self.output_path))
+            else:
+                self.__compile("java Matrix {} {} | grep -A 1 Timer | grep ^[0-9] >> {}" .format(nCol, nRow, self.output_path))
     def __compile(self, commond):
         sp.call(commond, shell=True)        
 
@@ -175,6 +176,7 @@ class Visualization:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Enter times of executing')
+    # parser.add_argument('-lab', '--nlab', type=int, default = 1)
     parser.add_argument('-n', '--nloop', type=int, default = 10)
     parser.add_argument('-d', '--debug', action='store_const',
                     const=True, default=False)
@@ -190,32 +192,58 @@ if __name__ == "__main__":
         args.nloop = 2
         
     # Config
-    with open('config.json') as json_file:
+    with open('config_lab2.json') as json_file:
         config = json.load(json_file)
 
-    compilers, cpp_file, cpp_config, dir_to_data, dir_to_pics = config.values()
+    compilers, cpp_file, const_config, cpp_configs, output_names, dir_to_data, dir_to_pics = config.values()
     MAX_ROW, MAX_COL = getShape(cpp_file)
-
+    
     if not os.path.exists(dir_to_data):
         os.makedirs(dir_to_data)
 
     if not args.justPlot:
-        for cpl in compilers:
-            build = Build(cpp_file, args.nloop, cpl, dir_to_data, cpp_config, args.debug)
-            build.run(MAX_ROW, MAX_COL)
+        cnt = 0
+        for config in cpp_configs:
+            for cpl in compilers:
+                output = output_names[cnt]
+                cnt += 1
+                _config = const_config + " " + config
+                build = Build(cpp_file, args.nloop, cpl, dir_to_data, _config, output, args.debug)
+                build.run(MAX_ROW, MAX_COL)
+    
     if not args.debug:
-        df = pd.DataFrame(columns=compilers)
-        for cpl in compilers:
-            path = dir_to_data + "/" + cpl + ".txt"
-            # print(path)
+        df = pd.DataFrame(columns=output_names)
+        for name in output_names:
+            print(name)
+            path = dir_to_data + "/" + name + ".txt"
             data = np.loadtxt(path)
-            # print(data)
-            df[cpl] = data
+            df[name] = data
         
         vis = Visualization(df, dir_to_pics)
-        html = vis.benchmark(compilers, args.savepic)
+        html = vis.benchmark(output_names, args.savepic)
 
-        for i in range(len(compilers)):
-            for j in range(i+1, len(compilers)):
-                vis.t_test(compilers[i], compilers[j], 0.05, args.savepic)
+        for i in range(len(output_names)):
+            for j in range(i+1, len(output_names)):
+                vis.t_test(output_names[i], output_names[j], 0.05, args.savepic)
         
+
+# {
+#     "compilers" : ["javac", "clang++", "g++-8", "icpc"],
+#     "cpp-souce-code" : "main.cpp",
+#     "const-config": "-std=c++17",
+#     "cpp-compiler-config": ["-O3"],
+#     "output-names": ["javac", "clang", "gcc", "icc"],
+#     "dir-to-data":"data/data-lab1/",
+#     "dir-to-pics":"pics/pics-lab1/"
+# }
+
+# {
+#     "compilers" : ["g++-8"],
+#     "cpp-souce-code" : "main.cpp",
+#     "const-config": "-std=c++17",
+#     "cpp-compiler-config": ["-O3", "-O1", "-O2", "-O2 -funroll-loops", "-O3"],
+#     "output-names": ["O0", "O1", "O2", "O2-with-unrol", "O3"],
+#     "dir-to-data":"data/data-lab2/",
+#     "dir-to-pics":"pics/pics-lab2/"
+# }
+
