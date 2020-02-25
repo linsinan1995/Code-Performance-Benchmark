@@ -1,19 +1,19 @@
 /*
- * @Author: Lin Sinan
- * @Github: https://github.com/linsinan1995
- * @Email: mynameisxiaou@gmail.com
- * @LastEditors  : Lin Sinan
- * @Description: 
- *               
- *               
- *               
- */
+* @Author: Lin Sinan
+* @Github: https://github.com/linsinan1995
+* @Email: mynameisxiaou@gmail.com
+ * @LastEditors: Lin Sinan
+* @Description: 
+*               
+*               
+*               
+*/
 
 
 public class Matrix {
-    final static int N = 1500;
-    final static int M = 1200;
-    final static int P = 500;
+    final static int N = 150;
+    final static int M = 120;
+    final static int P = 150;
 
     final static float MIN = 0f;
     final static float MAX = 1f;

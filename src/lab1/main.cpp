@@ -1,8 +1,8 @@
- /*
+/*
  * @Author: Lin Sinan
  * @Github: https://github.com/linsinan1995
  * @Email: mynameisxiaou@gmail.com
- * @LastEditors  : Lin Sinan
+ * @LastEditors: Lin Sinan
  * @Description: 
  * 
     sysctl -a | grep cache
@@ -14,19 +14,30 @@
  *               
  */
 
-#include <sys/time.h>
-#include "include/tool.h"
+#include <chrono>
+#include <stdio.h> 
+#include <stdlib.h> 
 
-#define N 4000
-#define M 5000
-#define P 500
+#define display(mat, nRow, nCol) for (int i = 0; i < nRow; i++) { \
+                                    for (int j = 0; j < nCol; j++) \
+                                        printf("%4f ", mat[i][j]); \
+                                printf("\n");} \
+                                printf("\n")
 
+#define getFloat() rand()/(float)(RAND_MAX/1.0);
+
+
+using namespace std;
+
+#define N 150
+#define M 120
+#define P 50
 
 float A[N][P];
 float B[P][M];
 float C[N][M];
 
-void initialize() {
+inline void initialize() {
     int i,j;
     for (i = 0; i < N; i++) {
         for (j = 0; j < P; j++) {
@@ -41,25 +52,12 @@ void initialize() {
     }
 }
 
-// void initialize(char* filepath) {
-//     for (int i = 0; i < N; i++) {
-//         for (int j = 0; j < M; j++) {
-//             C[i][j] = getFloat();
-//         }
-//     }
-
-//     for (int i = 0; i < N; i++) {
-//         for (int j = 0; j < P; j++) {
-//             A[i][j] = getFloat();
-//         }
-//     }
-// }
 
 int main(int argc, char *argv[])
 {
     if (argc != 3) {
         printf("Require 2 parameters, but it gets %d.\n", argc-1);
-        return 1;
+        exit(1);
     }
     
     int row = atoi(argv[1]);
@@ -67,16 +65,16 @@ int main(int argc, char *argv[])
 
     if (row >= N || col >= M) {
         printf("Index is out of the matrix size\n");
-        return 2;
+        exit(2);
     }
     
     srand((unsigned)time(NULL));
     initialize();
-    struct timeval start, end;
-
-
-    gettimeofday(&start, NULL);
+    auto start = chrono::high_resolution_clock::now();
+ 
+ 
     int i,j,k;
+#pragma noparallel
     for (i = 0; i < N; i++){
         for (j = 0; j < M; j++){
            for (k = 0; k< P; k++){
@@ -84,17 +82,17 @@ int main(int argc, char *argv[])
             }
         }       
     }
-    gettimeofday(&end, NULL);
 
+    auto end = chrono::high_resolution_clock::now();
+    float temps_execution = chrono::duration<float, nano>(end-start).count();
     
-    float temps_execution= (float) ((end.tv_sec - start.tv_sec) *1000000 + end.tv_usec - start.tv_usec);
     printf("%2f\n", C[row][col]);
     printf("%2f\n", A[row][col]);
     
     // display(C, N, M);
     // display(A, N, P);
     // display(B, P, M);
-    printf("Timer: \n%2f\n", temps_execution);
+    printf("Timer: \n%2f\n", temps_execution/1000.0);
     
     return 0;
 }

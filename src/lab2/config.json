@@ -1,0 +1,7 @@
+{
+    "problem" : 2, 
+    "num-loop" : 50,
+    "compilers": "g++-8",
+    "debug":false
+}
+

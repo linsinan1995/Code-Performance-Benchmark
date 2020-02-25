@@ -2,7 +2,7 @@
  * @Author: Lin Sinan
  * @Github: https://github.com/linsinan1995
  * @Email: mynameisxiaou@gmail.com
- * @LastEditors  : Lin Sinan
+ * @LastEditors: Lin Sinan
  * @Description: 
  * 
     sysctl -a | grep cache
@@ -15,15 +15,23 @@
  */
 
 #include <chrono>
-#include "include/tool.h"
+#include <stdio.h> 
+#include <stdlib.h> 
+
+#define display(mat, nRow, nCol) for (int i = 0; i < nRow; i++) { \
+                                    for (int j = 0; j < nCol; j++) \
+                                        printf("%4f ", mat[i][j]); \
+                                printf("\n");} \
+                                printf("\n")
+
+#define getFloat() rand()/(float)(RAND_MAX/1.0);
+
 
 using namespace std;
 
-#define N 1500
-#define M 1200
-#define P 500
-
-
+#define N 15
+#define M 12
+#define P 50
 
 float A[N][P];
 float B[P][M];
@@ -66,11 +74,17 @@ int main(int argc, char *argv[])
  
  
     int i,j,k;
-#pragma noparallel
     for (i = 0; i < N; i++){
         for (j = 0; j < M; j++){
-           for (k = 0; k< P; k++){
-               C[i][j] = C[i][j] + A[i][k] * B[k][j];
+            C[i][j] = C[i][j] + A[i][0] * B[0][j];
+            C[i][j] = C[i][j] + A[i][1] * B[1][j];
+            C[i][j] = C[i][j] + A[i][2] * B[2][j];
+            C[i][j] = C[i][j] + A[i][3] * B[3][j];
+            C[i][j] = C[i][j] + A[i][4] * B[4][j];
+            C[i][j] = C[i][j] + A[i][5] * B[5][j];
+            C[i][j] = C[i][j] + A[i][6] * B[6][j];
+            for (k = 7; k< P; k++){
+                C[i][j] = C[i][j] + A[i][k] * B[k][j];
             }
         }       
     }

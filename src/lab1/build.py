@@ -5,7 +5,7 @@
 @Author: Lin Sinan
 @Github: https://github.com/linsinan1995
 @Email: mynameisxiaou@gmail.com
-@LastEditors  : Lin Sinan
+@LastEditors: Lin Sinan
 @Description: 
               
 gcc -xc++ -lstdc++ -shared-libgcc -O3 -std=c++17 main.cpp
@@ -30,7 +30,7 @@ class Build(object):
     def __init__(self, filename, nTimes, compiler, output_dir, parameter, output, debug = False):
         self.nTimes = nTimes
         self.compiler = compiler
-        self.output_path = output_dir + output + ".txt"
+        self.output_path = output_dir +"/"+ output + ".txt"
         self.output = output
         self.debug = debug
         if not os.path.exists("build"):
@@ -67,7 +67,6 @@ class Build(object):
                 self.__compile("java Matrix {} {} | grep -A 1 Timer | grep ^[0-9] >> {}" .format(nCol, nRow, self.output_path))
     def __compile(self, commond):
         sp.call(commond, shell=True)        
-
 
 
 def getShape(file):
@@ -175,43 +174,28 @@ class Visualization:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Enter times of executing')
-    # parser.add_argument('-lab', '--nlab', type=int, default = 1)
-    parser.add_argument('-n', '--nloop', type=int, default = 10)
-    parser.add_argument('-d', '--debug', action='store_const',
-                    const=True, default=False)
-    parser.add_argument('-s', '--savepic', action='store_const',
-                    const=True, default=False)
-    # parser.add_argument('--justPlot', type=bool, default = False)
-    parser.add_argument('-jp', '--justPlot', action='store_const',
-                    const=True, default=False)
 
-    args = parser.parse_args()
-
-    if args.nloop <= 1 and  not  args.debug:
-        args.nloop = 2
-        
     # Config
-    with open('config_lab2.json') as json_file:
+    with open('config.json') as json_file:
         config = json.load(json_file)
 
-    compilers, cpp_file, const_config, cpp_configs, output_names, dir_to_data, dir_to_pics = config.values()
+    cpp_file = "main.cpp"
+    nloop, compilers, const_config, cpp_configs, output_names, dir_to_data, dir_to_pics, only_plot, debug = config.values()
     MAX_ROW, MAX_COL = getShape(cpp_file)
     
     if not os.path.exists(dir_to_data):
         os.makedirs(dir_to_data)
 
-    if not args.justPlot:
+    if not only_plot:
         cnt = 0
-        for config in cpp_configs:
-            for cpl in compilers:
-                output = output_names[cnt]
-                cnt += 1
-                _config = const_config + " " + config
-                build = Build(cpp_file, args.nloop, cpl, dir_to_data, _config, output, args.debug)
-                build.run(MAX_ROW, MAX_COL)
-    
-    if not args.debug:
+        for cpl in compilers:
+            output = output_names[cnt]
+            _config = const_config + " " + cpp_configs[cnt]
+            build = Build(cpp_file, nloop, cpl, dir_to_data, _config, output, debug)
+            build.run(MAX_ROW, MAX_COL)
+            cnt += 1
+
+    if not debug:
         df = pd.DataFrame(columns=output_names)
         for name in output_names:
             print(name)
@@ -220,30 +204,9 @@ if __name__ == "__main__":
             df[name] = data
         
         vis = Visualization(df, dir_to_pics)
-        html = vis.benchmark(output_names, args.savepic)
+        html = vis.benchmark(output_names, True)
 
         for i in range(len(output_names)):
             for j in range(i+1, len(output_names)):
-                vis.t_test(output_names[i], output_names[j], 0.05, args.savepic)
+                vis.t_test(output_names[i], output_names[j], 0.05, True)
         
-
-# {
-#     "compilers" : ["javac", "clang++", "g++-8", "icpc"],
-#     "cpp-souce-code" : "main.cpp",
-#     "const-config": "-std=c++17",
-#     "cpp-compiler-config": ["-O3"],
-#     "output-names": ["javac", "clang", "gcc", "icc"],
-#     "dir-to-data":"data/data-lab1/",
-#     "dir-to-pics":"pics/pics-lab1/"
-# }
-
-# {
-#     "compilers" : ["g++-8"],
-#     "cpp-souce-code" : "main.cpp",
-#     "const-config": "-std=c++17",
-#     "cpp-compiler-config": ["-O3", "-O1", "-O2", "-O2 -funroll-loops", "-O3"],
-#     "output-names": ["O0", "O1", "O2", "O2-with-unrol", "O3"],
-#     "dir-to-data":"data/data-lab2/",
-#     "dir-to-pics":"pics/pics-lab2/"
-# }
-

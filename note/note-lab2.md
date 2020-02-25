@@ -131,7 +131,7 @@ Unroll loops whose number of iterations can be determined at compile time or upo
 
 # -floop-interchange
 
-
+loop interchange.
 
 ## -finline-functions
 

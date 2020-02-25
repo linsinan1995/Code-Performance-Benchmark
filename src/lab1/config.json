@@ -1,0 +1,12 @@
+{
+    "num-loop" : 2,
+    "compilers" : ["javac", "clang++", "g++-8", "icpc"],
+    "const-config": "-std=c++17",
+    "cpp-compiler-config": ["-O0", "-O1", "-O2", "-O3"],
+    "output-names": ["javac", "clang", "g++", "icc"],
+    "dir-to-data":"data",
+    "dir-to-pics":"pic",
+    "only-plot":true,
+    "debug":false
+}
+
