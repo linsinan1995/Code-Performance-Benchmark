@@ -2,7 +2,7 @@
  * @Author: Lin Sinan
  * @Github: https://github.com/linsinan1995
  * @Email: mynameisxiaou@gmail.com
- * @LastEditors: Lin Sinan
+ * @LastEditors  : Lin Sinan
  * @Description: 
 *               
 *               
@@ -75,7 +75,7 @@ gcc -v
 
 
 
-![Benchmark](pics/lab1/result.png)
+![Benchmark](pics/result.png)
 
 <br>
 
@@ -92,7 +92,7 @@ Conclusion: ICC is significantly faster than any other C++/C compilers. In addit
 As for statistical inference, we use paired sample T-test. It is a tool to determine whether the mean of two samples sets is different. We use upper-tailed test, thus we can figure out which compilers/languages is slower(use more time) in terms of their executing time. 
 
 
-![javac-clang](pics/lab1/javac_clang.png)
+![javac-clang](pics/javac_clang.png)
 
 ```
 Hypothesis 0: compiler javac is faster or equal to compiler clang, 
@@ -103,7 +103,7 @@ REJECT the null hypothesis
 compiler `javac` is statistically slower than compiler `clang`.
 
 
-![gcc-icc](pics/lab1/gcc-8_icc.png)
+![gcc-icc](pics/gcc-8_icc.png)
 
 ```
 Hypothesis 0: compiler gcc-8 is faster or equal to compiler icc, 
@@ -113,7 +113,7 @@ REJECT the null hypothesis
 ```
 compiler `gcc` is statistically slower than compiler `icc`.
 
-![clang-icc](pics/lab1/clang_gcc-8.png)
+![clang-icc](pics/clang_gcc-8.png)
 
 ```
 Hypothesis 0: compiler clang is faster or equal to compiler gcc-8, 

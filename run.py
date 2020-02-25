@@ -14,15 +14,8 @@ clang -std=c++17
 
 gcc -O3 main.c           
 '''
-import sys,os
-import re
+
 import argparse
-import random
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from scipy.stats import t, ttest_ind
-import math
 import json
 import subprocess as sp
 
