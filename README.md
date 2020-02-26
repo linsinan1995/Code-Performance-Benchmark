@@ -26,14 +26,13 @@ Project Address: http://i3s.unice.fr/master-info/ter/TER-S2-liste-des-sujets-202
 ## macOS
 
 ```
-MacBook Pro (Retina, 13-inch, Early 2015)
+macOS High Sierra(10.13.6)
 2.7 GHz Intel Core i5
 8 GB 1867 MHz DDR3
 ```
 
 compilers:
 ```shell
-# Apple LLVM version 10.0.0 (clang-1000.10.44.4)
 clang -v
 # Apple LLVM version 10.0.0 (clang-1000.10.44.4)
 gcc-8 -v
@@ -43,6 +42,26 @@ icc -v
 javac -version
 # javac 1.8.0_231
 ```
+## Ubuntu
+
+```
+Ubuntu 18.04.2 LTS
+Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz
+16GiB 2400MHz DDR4
+```
+
+compilers:
+```shell
+clang -v
+# clang version 6.0.0-1ubuntu2
+gcc -v
+# gcc version 5.5.0 20171010 (Ubuntu 5.5.0-12ubuntu1) 
+icc -v
+# icc version 19.1.0.166 (gcc version 5.5.0 compatibility)
+javac -version
+# javac 11.0.6
+```
+
 
 # Notice
 
@@ -58,6 +77,15 @@ sysctl -a | grep cachesize
 # hw.l3cachesize: 3145728
 ```
 
+for ubuntu, the matrix size is 2000  X 3000 in this experiment.
+```shell
+lscpu | grep cache
+# L1d cache:     32K
+# L1i cache:       32K
+# L2 cache:        256K
+# L3 cache:        6144K
+```
+
 - In macOs, gcc is actually an alias of clang. For using gcc, we should run `brew install gcc`, and then `gcc-8` is the gcc compiler for macOS.
 
 ```shell
@@ -69,10 +97,9 @@ gcc -v
 
 <br>
 
-# 2.Result
+# 2.Lab
 
-## 2.1.Benchmark
-
+## 2.1.Performance benchmark for different compilers(language)
 
 
 ![Benchmark](pics/lab1/result.png)
@@ -126,7 +153,13 @@ compiler clang is statistically slower than compiler gcc.
 
 # 3.Usage
 
-## 3.1.Modefy json
+## 3.1.Choose a project
+
+Take lab1 for example
+
+## 3.2.Modify json
+
+modify `config.json` in `src\lab1`
 
 e.g.change the names of compilers if necessary.
 
@@ -137,18 +170,30 @@ e.g.change the names of compilers if necessary.
 }
 ```
 
-## 3.2.Run the experiment
+change the names of output images. (its length should be equal to the length of `"compilers"`)
+
+```
+    "output-names": ["javac", "clang", "g++", "icc"],
+```
+
+
+## 3.3.Run the experiment
 ```shell
-python build.py [-h] [-n NLOOP] [-d] [-s] [-jp]
+python build.py [--nlab] 
 ```
 
 Run benchmark with 30 loops(it saves benchmark logs in dir `data/`), and save benchmark/analysis pictures
 ```shell
-python build.py -n 30 -s
+python run.py --nlab 1
 ```
 
-Do visualization and statistical analysis only(data obtained from benchmark logs)
-```shell
-python build.py -js
-```
 
+# TO DO
+
+Before 1st March
+
+1. load matrix from txt & test the acc of calculation
+
+2. complete R plot script
+
+3. complete lab2

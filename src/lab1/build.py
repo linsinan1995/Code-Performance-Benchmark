@@ -33,9 +33,7 @@ class Build(object):
         self.output_path = output_dir +"/"+ output + ".txt"
         self.output = output
         self.debug = debug
-        if not os.path.exists("build"):
-                os.makedirs("build")
-        
+
         if compiler != "javac":
             if os.path.exists("build/execute_{0}".format(output)):
                 self.__compile("rm build/execute_{0}".format(output))
@@ -59,9 +57,7 @@ class Build(object):
             if self.compiler != "javac":
                 if self.debug: 
                     print("./build/execute_{} {} {}  >> {}" .format(self.output, nCol, nRow, self.output_path))
-                    self.__compile("./build/execute_{} {} {}  >> {}" .format(self.output, nCol, nRow, self.output_path))
-                else:
-                    self.__compile("./build/execute_{} {} {} | grep -A 1 Timer | grep ^[0-9] >> {}"
+                self.__compile("./build/execute_{} {} {} | grep -A 1 Timer | grep ^[0-9] >> {}"
                         .format(self.output, nCol, nRow, self.output_path))
             else:
                 self.__compile("java Matrix {} {} | grep -A 1 Timer | grep ^[0-9] >> {}" .format(nCol, nRow, self.output_path))
@@ -174,7 +170,15 @@ class Visualization:
 
 
 if __name__ == "__main__":
+    if not os.path.exists("build"):
+            os.makedirs("build")
+    
+    if not os.path.exists("data"):
+        os.makedirs("data")
 
+    if not os.path.exists("pic"):
+        os.makedirs("pic")
+        
     # Config
     with open('config.json') as json_file:
         config = json.load(json_file)

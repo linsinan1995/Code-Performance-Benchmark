@@ -8,11 +8,6 @@
 @LastEditors: Lin Sinan
 @Description: 
               
-gcc -xc++ -lstdc++ -shared-libgcc -O3 -std=c++17 main.cpp
-gcc -xc++ -lstdc++ -std=c++17 -O3 main.cpp       
-clang -std=c++17
-
-gcc -O3 main.c           
 '''
 
 import argparse
@@ -35,6 +30,6 @@ if __name__ == "__main__":
         args.nlab = 1
         
     # Config
-    python_int = "python3"
+    python_int = "python"
     
     Run(args.nlab, python_int)

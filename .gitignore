@@ -5,6 +5,7 @@ build/
 test.py
 a.out
 main.c
-data*
 .Rproj.user
 tool/
+doc*
+pics*
