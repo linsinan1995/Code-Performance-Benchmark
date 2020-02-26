@@ -74,17 +74,11 @@ int main(int argc, char *argv[])
  
  
     int i,j,k;
-    for (i = 0; i < N; i++){
-        for (j = 0; j < M; j++){
-            C[i][j] = C[i][j] + A[i][0] * B[0][j];
-            C[i][j] = C[i][j] + A[i][1] * B[1][j];
-            C[i][j] = C[i][j] + A[i][2] * B[2][j];
-            C[i][j] = C[i][j] + A[i][3] * B[3][j];
-            C[i][j] = C[i][j] + A[i][4] * B[4][j];
-            C[i][j] = C[i][j] + A[i][5] * B[5][j];
-            C[i][j] = C[i][j] + A[i][6] * B[6][j];
-            for (k = 7; k< P; k++){
-                C[i][j] = C[i][j] + A[i][k] * B[k][j];
+    #pragma noparallel
+    for (i = 0; i < M; i++){
+        for (j = 0; j < N; j++){
+           for (k = 0; k< P; k++){
+               C[j][i] = C[j][i] + A[j][k] * B[k][i];
             }
         }       
     }
