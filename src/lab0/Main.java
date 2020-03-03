@@ -10,10 +10,10 @@
 */
 
 
-public class Matrix {
-    final static int N = 4000;
-    final static int M = 3000;
-    final static int P = 1000;
+public class Main {
+    final static int N = 1000;
+    final static int M = 200;
+    final static int P = 500;
 
     final static float MIN = 0f;
     final static float MAX = 1f;
@@ -22,7 +22,7 @@ public class Matrix {
     float[][] B = new float[P][M];
     float[][] C = new float[N][M];
 
-    Matrix() {
+    Main() {
         int i, j;
         for (i = 0; i < N; i++) {
             for (j = 0; j < P; j++) {
@@ -61,26 +61,21 @@ public class Matrix {
     
     public static void main(String []args) {
         long startTime, stopTime;
-        int row, col;
 
         if (args.length != 2) {
             System.out.println("Please input row and col parameters");
             System.exit(1);
         }
         
-
-        row = Integer.parseInt(args[0]);
-        col = Integer.parseInt(args[1]);
-
-        Matrix mat = new Matrix();
-        startTime = System.nanoTime();
-        mat.computition();
-        stopTime = System.nanoTime();
-        long elapsedTime = stopTime - startTime;
-        float time = (float)elapsedTime/1000f; // nanosec to microsec
-
-        System.out.println(mat.C[row][col]);
-        System.out.printf("Timer: \n%4f\n", time);
+        Main mat = new Main();
+        for (int i = 0; i < 200; i++ ) {
+            startTime = System.nanoTime();
+            mat.computition();
+            stopTime = System.nanoTime();
+            long elapsedTime = stopTime - startTime;
+            float time = (float)elapsedTime/1000f; // nanosec to microsec
+            System.out.printf(" %4f\n",  time);
+        }
         // display(mat.A, N, P);
         // display(mat.B, P, M);
         // display(mat.C, N, M);

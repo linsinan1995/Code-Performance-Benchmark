@@ -1,8 +1,7 @@
 {
-    "problem" : [2], 
-    "num-loop" : 50,
+    "problem" : [3], 
+    "num-loop" : 20,
     "compilers": "g++",
     "debug":true,
     "just-plot":false
 }
-

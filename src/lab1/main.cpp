@@ -29,9 +29,9 @@
 
 using namespace std;
 
-#define N 150
-#define M 120
-#define P 50
+#define N 4000
+#define M 3000
+#define P 1000
 
 float A[N][P];
 float B[P][M];
@@ -87,7 +87,6 @@ int main(int argc, char *argv[])
     float temps_execution = chrono::duration<float, nano>(end-start).count();
     
     printf("%2f\n", C[row][col]);
-    printf("%2f\n", A[row][col]);
     
     // display(C, N, M);
     // display(A, N, P);

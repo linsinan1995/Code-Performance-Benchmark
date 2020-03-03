@@ -27,8 +27,8 @@
                                 printf("\n")
 
 #define getFloat() rand()/(float)(RAND_MAX/1.0);
-
-
+#define _MIN(a,b) ((a) < (b) ? (a) : (b))
+#define b 700  
 
 using namespace std;
 
@@ -122,77 +122,72 @@ int main(int argc, char *argv[])
     srand((unsigned)time(NULL));
     initialize();
 #endif
-    
-
     auto start = chrono::high_resolution_clock::now();
- 
-    int i,j,k;
 
-#if NMP
-    for (i = 0; i < N; i++){
-        for (j = 0; j < M; j++){
-           for (k = 0; k< P; k++){
-               C[i][j] = C[i][j] + A[i][k] * B[k][j];
-            }
-        }       
-    }
-    file_test = "NMP";
+ int i0, i, j0, j, k0, k;
+ #if NMP
+    for (i0 = 0; i0 < N; i0 += b)
+        for (j0 = 0; j0 < M; j0 += b)
+            for (k0 = 0; k0 < P; k0 += b)
+                for (i = i0; i < _MIN(i0 + b, N); i++)
+                    for (j = j0; j < _MIN(j0 + b, M); j++)
+                        for (k = k0; k < _MIN(k0 + b, P); k++)         
 #endif
- 
-#if NPM
-    for (i = 0; i < N; i++){
-        for (k = 0; k< P; k++){
-           for (j = 0; j < M; j++){
-               C[i][j] = C[i][j] + A[i][k] * B[k][j];
-            }
-        }       
-    }
-    file_test = "NPM";
+ #if NPM
+    for (i0 = 0; i0 < N; i0 += b)
+        for (k0 = 0; k0 < P; k0 += b)
+            for (j0 = 0; j0 < M; j0 += b)
+                for (i = i0; i < _MIN(i0 + b, N); i++)
+                    for (k = k0; k < _MIN(k0 + b, P); k++)         
+                        for (j = j0; j < _MIN(j0 + b, M); j++)
 #endif
-
-#if PNM
-    for (k = 0; k< P; k++){
-        for (i = 0; i < N; i++){
-           for (j = 0; j < M; j++){
-               C[i][j] = C[i][j] + A[i][k] * B[k][j];
-            }
-        }       
-    }
-    file_test = "PNM";
+ #if MNP
+    for (j0 = 0; j0 < M; j0 += b)
+        for (i0 = 0; i0 < N; i0 += b)
+            for (k0 = 0; k0 < P; k0 += b)
+                for (j = j0; j < _MIN(j0 + b, M); j++)
+                    for (i = i0; i < _MIN(i0 + b, N); i++)
+                        for (k = k0; k < _MIN(k0 + b, P); k++)         
 #endif
-
-#if PMN
-    for (k = 0; k< P; k++){
-        for (j = 0; j < M; j++){
-            for (i = 0; i < N; i++){
-               C[i][j] = C[i][j] + A[i][k] * B[k][j];
-            }
-        }       
-    }
-    file_test = "PMN";
+ #if MPN
+    for (j0 = 0; j0 < M; j0 += b)
+        for (k0 = 0; k0 < P; k0 += b)
+            for (i0 = 0; i0 < N; i0 += b)
+                for (j = j0; j < _MIN(j0 + b, M); j++)
+                    for (k = k0; k < _MIN(k0 + b, P); k++)     
+                        for (i = i0; i < _MIN(i0 + b, N); i++)    
+#endif
+ #if PMN
+    for (k0 = 0; k0 < P; k0 += b)
+        for (j0 = 0; j0 < M; j0 += b)
+            for (i0 = 0; i0 < N; i0 += b)
+                for (k = k0; k < _MIN(k0 + b, P); k++)      
+                    for (j = j0; j < _MIN(j0 + b, M); j++)
+                        for (i = i0; i < _MIN(i0 + b, N); i++)   
 #endif
 
-#if MNP
-    for (j = 0; j < M; j++){
-        for (i = 0; i < N; i++){
-            for (k = 0; k< P; k++){ 
-               C[i][j] = C[i][j] + A[i][k] * B[k][j];
-            }
-        }       
-    }
-    file_test = "MNP";
+ #if PNM
+    for (k0 = 0; k0 < P; k0 += b)
+        for (i0 = 0; i0 < N; i0 += b)
+            for (j0 = 0; j0 < M; j0 += b)     
+                for (k = k0; k < _MIN(k0 + b, P); k++) 
+                    for (i = i0; i < _MIN(i0 + b, N); i++)   
+                            for (j = j0; j < _MIN(j0 + b, M); j++)
 #endif
 
-#if MPN
-    for (j = 0; j < M; j++){
-        for (k = 0; k< P; k++){ 
-            for (i = 0; i < N; i++){
-               C[i][j] = C[i][j] + A[i][k] * B[k][j];
-            }
-        }       
-    }
-    file_test = "MPN";
+ #if NORMAL
+    for (i = 0; i < N; i++)
+        for (j = 0; j < M; j++)
+            for (k = 0; k< P; k++)
 #endif
+
+ #if BEST_INT
+    for (i = 0; i < N; i++)
+        for (k = 0; k< P; k++)
+            for (j = 0; j < M; j++)
+#endif
+                            C[i][j] += A[i][k] * B[k][j];
+
 
     auto end = chrono::high_resolution_clock::now();
     float temps_execution = chrono::duration<float, nano>(end-start).count();
@@ -201,7 +196,7 @@ int main(int argc, char *argv[])
     matrix_to_txt(file_test);    
 #endif 
     printf("%2f\n", C[row][col]);
-    
+
     // display(C, N, M);
     // display(A, N, P);
     // display(B, P, M);

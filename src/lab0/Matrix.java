@@ -11,9 +11,9 @@
 
 
 public class Matrix {
-    final static int N = 4000;
-    final static int M = 3000;
-    final static int P = 1000;
+    final static int N = 2000;
+    final static int M = 1000;
+    final static int P = 500;
 
     final static float MIN = 0f;
     final static float MAX = 1f;

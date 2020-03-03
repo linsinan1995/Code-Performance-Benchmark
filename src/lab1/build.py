@@ -56,11 +56,13 @@ class Build(object):
             nCol, nRow = random.randint(0,MAX_ROW-1), random.randint(0,MAX_COL-1)
             if self.compiler != "javac":
                 if self.debug: 
-                    print("./build/execute_{} {} {}  >> {}" .format(self.output, nCol, nRow, self.output_path))
+                    print("./build/execute_{} {} {} | grep -A 1 Timer | grep ^[0-9] >>  {}" .format(self.output, nCol, nRow, self.output_path))
                 self.__compile("./build/execute_{} {} {} | grep -A 1 Timer | grep ^[0-9] >> {}"
                         .format(self.output, nCol, nRow, self.output_path))
             else:
-                self.__compile("java Matrix {} {} | grep -A 1 Timer | grep ^[0-9] >> {}" .format(nCol, nRow, self.output_path))
+                if self.debug: 
+                    print("java -XX:CompileThreshold=1 -XX:+TieredCompilation Matrix {} {} | grep -A 1 Timer | grep ^[0-9] >> {}" .format(nCol, nRow, self.output_path))
+                self.__compile("java -XX:CompileThreshold=1 -XX:+TieredCompilation Matrix {} {} | grep -A 1 Timer | grep ^[0-9] >> {}" .format(nCol, nRow, self.output_path))
     def __compile(self, commond):
         sp.call(commond, shell=True)        
 
@@ -199,18 +201,17 @@ if __name__ == "__main__":
             build.run(MAX_ROW, MAX_COL)
             cnt += 1
 
-    if not debug:
-        df = pd.DataFrame(columns=output_names)
-        for name in output_names:
-            print(name)
-            path = dir_to_data + "/" + name + ".txt"
-            data = np.loadtxt(path)
-            df[name] = data
-        
-        vis = Visualization(df, dir_to_pics)
-        html = vis.benchmark(output_names, True)
+    df = pd.DataFrame(columns=output_names)
+    for name in output_names:
+        print(name)
+        path = dir_to_data + "/" + name + ".txt"
+        data = np.loadtxt(path)
+        df[name] = data
+    
+    vis = Visualization(df, dir_to_pics)
+    html = vis.benchmark(output_names, True)
 
-        for i in range(len(output_names)):
-            for j in range(i+1, len(output_names)):
-                vis.t_test(output_names[i], output_names[j], 0.05, True)
+    for i in range(len(output_names)):
+        for j in range(i+1, len(output_names)):
+            vis.t_test(output_names[i], output_names[j], 0.05, True)
         

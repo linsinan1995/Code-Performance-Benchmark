@@ -26,18 +26,34 @@
 
 #define getFloat() rand()/(float)(RAND_MAX/1.0);
 
-
 using namespace std;
 
-#define N 2000
+#define N 4000
 #define M 3000
-#define P 200
+#define P 1000
 
 float A[N][P];
 float B[P][M];
 float C[N][M];
 
-inline void initialize() {
+void initialize() {
+    int i,j;
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < P; j++) {
+            A[i][j] = getFloat();
+        }
+    }
+
+    for (i = 0; i < P; i++) {
+        for (j = 0; j < M; j++) {
+            B[i][j] = getFloat();
+        }
+    }
+}
+
+
+void initialize_load_from_file() {
+
     int i,j;
     for (i = 0; i < N; i++) {
         for (j = 0; j < P; j++) {
@@ -72,10 +88,10 @@ int main(int argc, char *argv[])
     initialize();
     auto start = chrono::high_resolution_clock::now();
  
- 
     int i,j,k;
     for (i = 0; i < N; i++){
         for (j = 0; j < M; j++){
+#if UNROLL
             C[i][j] = C[i][j] + A[i][0] * B[0][j];
             C[i][j] = C[i][j] + A[i][1] * B[1][j];
             C[i][j] = C[i][j] + A[i][2] * B[2][j];
@@ -84,6 +100,9 @@ int main(int argc, char *argv[])
             C[i][j] = C[i][j] + A[i][5] * B[5][j];
             C[i][j] = C[i][j] + A[i][6] * B[6][j];
             for (k = 7; k< P; k++){
+#else
+            for (k = 0; k< P; k++){
+#endif
                 C[i][j] = C[i][j] + A[i][k] * B[k][j];
             }
         }       
@@ -93,7 +112,6 @@ int main(int argc, char *argv[])
     float temps_execution = chrono::duration<float, nano>(end-start).count();
     
     printf("%2f\n", C[row][col]);
-    printf("%2f\n", A[row][col]);
     
     // display(C, N, M);
     // display(A, N, P);
