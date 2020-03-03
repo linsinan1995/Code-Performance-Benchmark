@@ -1,11 +1,12 @@
 # 1. Loop unroll
 
 
-![](unroll/Ridgeline.png)
 
 ![](unroll/Ridgeline.png)
 
 ![](unroll/Ridgeline_area.png)
+
+![](unroll/difference_unroll.png)
 
 
 
@@ -19,6 +20,9 @@ rate : 0.8%
 
 # 3.Loop Tiling
 
+B is 700.
+
+3 * 700 * 700 * 4 = 5880000 < 6440000
 
 ![](tiling/Ridgeline_NPM.png)
 
