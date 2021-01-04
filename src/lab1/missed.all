@@ -1,0 +1,19 @@
+nounroll.cpp:58:15: missed:   will not early inline: int main(int, char**)/256->void initialize()/247, call is cold and code would grow at least by 25
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:104:23: missed:   not inlinable: int main(int, char**)/256 -> int __printf_chk(int, const char*, ...)/767, function body not available
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:104:23: missed:   not inlinable: int main(int, char**)/256 -> int __printf_chk(int, const char*, ...)/767, function body not available
+nounroll.cpp:71:51: missed:   not inlinable: int main(int, char**)/256 -> static std::chrono::_V2::system_clock::time_point std::chrono::_V2::system_clock::now()/764, function body not available
+nounroll.cpp:59:53: missed:   not inlinable: int main(int, char**)/256 -> static std::chrono::_V2::system_clock::time_point std::chrono::_V2::system_clock::now()/764, function body not available
+nounroll.cpp:58:15: missed:   not inlinable: int main(int, char**)/256 -> void initialize()/247, --param max-inline-insns-auto limit reached
+nounroll.cpp:57:10: missed:   not inlinable: int main(int, char**)/256 -> void srand(unsigned int)/763, function body not available
+nounroll.cpp:57:25: missed:   not inlinable: int main(int, char**)/256 -> time_t time(time_t*)/762, function body not available
+nounroll.cpp:54:13: missed:   not inlinable: int main(int, char**)/256 -> void exit(int)/761, function body not available
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:104:23: missed:   not inlinable: int main(int, char**)/256 -> int __printf_chk(int, const char*, ...)/767, function body not available
+/usr/include/stdlib.h:363:23: missed:   not inlinable: int main(int, char**)/256 -> long int strtol(const char*, char**, int)/766, function body not available
+/usr/include/stdlib.h:363:23: missed:   not inlinable: int main(int, char**)/256 -> long int strtol(const char*, char**, int)/766, function body not available
+nounroll.cpp:46:13: missed:   not inlinable: int main(int, char**)/256 -> void exit(int)/761, function body not available
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:104:23: missed:   not inlinable: int main(int, char**)/256 -> int __printf_chk(int, const char*, ...)/767, function body not available
+nounroll.cpp:23:16: missed:   not inlinable: void initialize()/247 -> int rand()/760, function body not available
+nounroll.cpp:23:16: missed:   not inlinable: void initialize()/247 -> int rand()/760, function body not available
+nounroll.cpp:23:16: missed:   not inlinable: float getFloat()/246 -> int rand()/760, function body not available
+nounroll.cpp:23:16: missed: statement clobbers memory: _16 = rand ();
+nounroll.cpp:23:16: missed: statement clobbers memory: _19 = rand ();

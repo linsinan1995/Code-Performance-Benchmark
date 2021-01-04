@@ -11,9 +11,9 @@
 
 
 public class Matrix {
-    final static int N = 2000;
-    final static int M = 1000;
-    final static int P = 500;
+    static int N;
+    static int M;
+    static int P;
 
     final static float MIN = 0f;
     final static float MAX = 1f;
@@ -61,28 +61,27 @@ public class Matrix {
     
     public static void main(String []args) {
         long startTime, stopTime;
-        int row, col;
 
-        if (args.length != 2) {
-            System.out.println("Please input row and col parameters");
+        if (args.length != 4) {
+            System.err.format("Argument numbers are not correct\nArgument number should be 4, but just received %d\n", args.length);
             System.exit(1);
         }
         
-
-        row = Integer.parseInt(args[0]);
-        col = Integer.parseInt(args[1]);
-
+        N = Integer.parseInt(args[0]);
+        M = Integer.parseInt(args[1]);
+        P = Integer.parseInt(args[2]);
+        int loop_size = Integer.parseInt(args[3]);
+        
         Matrix mat = new Matrix();
-        startTime = System.nanoTime();
-        mat.computition();
-        stopTime = System.nanoTime();
-        long elapsedTime = stopTime - startTime;
-        float time = (float)elapsedTime/1000f; // nanosec to microsec
+        for (int i = 0; i < loop_size; i++ ) {
+            startTime = System.nanoTime();
+            mat.computition();
+            stopTime = System.nanoTime();
+            long elapsedTime = stopTime - startTime;
+            float time = (float)elapsedTime/1000f; // nanosec to microsec
+            System.out.printf(" %4f\n",  time);
+        }
 
-        System.out.println(mat.C[row][col]);
-        System.out.printf("Timer: \n%4f\n", time);
         // display(mat.A, N, P);
-        // display(mat.B, P, M);
-        // display(mat.C, N, M);
     }
 }

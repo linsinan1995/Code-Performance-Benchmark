@@ -1,0 +1,565 @@
+
+;; Function interchange_manual (_Z18interchange_manualv, funcdef_no=3102, decl_uid=58875, cgraph_uid=981, symbol_order=986)
+
+Analyzing # of iterations of loop 1
+  exit condition [2099, + , 4294967295] != 0
+  bounds on difference of bases: -2099 ... -2099
+  result:
+    # of iterations 2099, bounded by 2099
+Creating dr for C[i_26][j_27]
+analyze_innermost: success.
+	base_address: &C
+	offset from base address: (ssizetype) ((sizetype) i_26 * 6400)
+	constant offset from base address: 0
+	step: 4
+	base alignment: 32
+	base misalignment: 0
+	offset alignment: 128
+	step alignment: 4
+	base_object: C
+	Access function 0: {0, +, 1}_2
+	Access function 1: {0, +, 1}_1
+Creating dr for A[i_26][k_28]
+analyze_innermost: success.
+	base_address: &A
+	offset from base address: (ssizetype) ((sizetype) i_26 * 8000)
+	constant offset from base address: 0
+	step: 4
+	base alignment: 32
+	base misalignment: 0
+	offset alignment: 64
+	step alignment: 4
+	base_object: A
+	Access function 0: {0, +, 1}_3
+	Access function 1: {0, +, 1}_1
+Creating dr for B[k_28][j_27]
+analyze_innermost: success.
+	base_address: &B
+	offset from base address: (ssizetype) ((sizetype) j_27 * 4)
+	constant offset from base address: 0
+	step: 6400
+	base alignment: 32
+	base misalignment: 0
+	offset alignment: 4
+	step alignment: 128
+	base_object: B
+	Access function 0: {0, +, 1}_2
+	Access function 1: {0, +, 1}_3
+Creating dr for C[i_26][j_27]
+analyze_innermost: success.
+	base_address: &C
+	offset from base address: (ssizetype) ((sizetype) i_26 * 6400)
+	constant offset from base address: 0
+	step: 4
+	base alignment: 32
+	base misalignment: 0
+	offset alignment: 128
+	step alignment: 4
+	base_object: C
+	Access function 0: {0, +, 1}_2
+	Access function 1: {0, +, 1}_1
+(compute_affine_dependence
+  stmt_a: C_I_I_lsm.82_22 = C[i_26][j_27];
+  stmt_b: C[i_26][j_27] = _38;
+(analyze_overlapping_iterations 
+  (chrec_a = {0, +, 1}_2)
+  (chrec_b = {0, +, 1}_2)
+  (overlap_iterations_a = [0])
+  (overlap_iterations_b = [0]))
+(analyze_overlapping_iterations 
+  (chrec_a = {0, +, 1}_1)
+  (chrec_b = {0, +, 1}_1)
+  (overlap_iterations_a = [0])
+  (overlap_iterations_b = [0]))
+)
+(compute_affine_dependence
+  stmt_a: _2 = A[i_26][k_28];
+  stmt_b: C[i_26][j_27] = _38;
+) -> no dependence
+(compute_affine_dependence
+  stmt_a: _3 = B[k_28][j_27];
+  stmt_b: C[i_26][j_27] = _38;
+) -> no dependence
+
+Consider loop interchange for loop_nest<1 - 3>
+Access Strides for DRs:
+  C[i_26][j_27]:		<6400,	4,	0>
+  A[i_26][k_28]:		<8000,	0,	4>
+  B[k_28][j_27]:		<0,	4,	6400>
+  C[i_26][j_27]:		<6400,	4,	0>
+
+Loop(3) carried vars:
+  Induction:  k_28 = {0, 1}_3
+interchange_manual ()
+{
+  float C_I_I_lsm.82;
+  int k;
+  int j;
+  int i;
+  float _2;
+  float _3;
+  float _4;
+  float _5;
+  unsigned int ivtmp_32;
+  unsigned int ivtmp_33;
+  unsigned int ivtmp_34;
+  unsigned int ivtmp_35;
+  unsigned int ivtmp_36;
+  unsigned int ivtmp_37;
+  float _38;
+
+  <bb 2> [local count: 1096]:
+
+  <bb 3> [local count: 108458]:
+  # i_26 = PHI <0(2), i_16(9)>
+  # ivtmp_33 = PHI <2100(2), ivtmp_32(9)>
+
+  <bb 4> [local count: 10737416]:
+  # j_27 = PHI <0(3), j_15(10)>
+  # ivtmp_35 = PHI <1600(3), ivtmp_34(10)>
+  C_I_I_lsm.82_22 = C[i_26][j_27];
+
+  <bb 5> [local count: 1063004408]:
+  # k_28 = PHI <0(4), k_14(11)>
+  # C_I_I_lsm.82_23 = PHI <C_I_I_lsm.82_22(4), _5(11)>
+  # ivtmp_37 = PHI <2000(4), ivtmp_36(11)>
+  _2 = A[i_26][k_28];
+  _3 = B[k_28][j_27];
+  _4 = _2 * _3;
+  _5 = _4 + C_I_I_lsm.82_23;
+  k_14 = k_28 + 1;
+  ivtmp_36 = ivtmp_37 - 1;
+  if (ivtmp_36 == 0)
+    goto <bb 6>; [1.01%]
+  else
+    goto <bb 11>; [98.99%]
+
+  <bb 11> [local count: 1052266995]:
+  goto <bb 5>; [100.00%]
+
+  <bb 6> [local count: 10737417]:
+  # _38 = PHI <_5(5)>
+  C[i_26][j_27] = _38;
+  j_15 = j_27 + 1;
+  ivtmp_34 = ivtmp_35 - 1;
+  if (ivtmp_34 == 0)
+    goto <bb 7>; [1.01%]
+  else
+    goto <bb 10>; [98.99%]
+
+  <bb 10> [local count: 10628958]:
+  goto <bb 4>; [100.00%]
+
+  <bb 7> [local count: 108459]:
+  i_16 = i_26 + 1;
+  ivtmp_32 = ivtmp_33 - 1;
+  if (ivtmp_32 == 0)
+    goto <bb 8>; [1.01%]
+  else
+    goto <bb 9>; [98.99%]
+
+  <bb 9> [local count: 107363]:
+  goto <bb 3>; [100.00%]
+
+  <bb 8> [local count: 1096]:
+  return;
+
+}
+
+
+
+;; Function std::mersenne_twister_engine<long unsigned int, 32, 624, 397, 31, 2567483615, 11, 4294967295, 7, 2636928640, 15, 4022730752, 18, 1812433253>::_M_gen_rand (_ZNSt23mersenne_twister_engineImLm32ELm624ELm397ELm31ELm2567483615ELm11ELm4294967295ELm7ELm2636928640ELm15ELm4022730752ELm18ELm1812433253EE11_M_gen_randEv, funcdef_no=3504, decl_uid=49385, cgraph_uid=1383, symbol_order=1391)
+
+std::mersenne_twister_engine<long unsigned int, 32, 624, 397, 31, 2567483615, 11, 4294967295, 7, 2636928640, 15, 4022730752, 18, 1812433253>::_M_gen_rand (struct mersenne_twister_engine * const this)
+{
+  long unsigned int __y;
+  size_t __k;
+  long unsigned int __y;
+  size_t __k;
+  long unsigned int __y;
+  long unsigned int _1;
+  long unsigned int _2;
+  long unsigned int _3;
+  long unsigned int _4;
+  long unsigned int _5;
+  long unsigned int _6;
+  long unsigned int _7;
+  long unsigned int _8;
+  long unsigned int _9;
+  long unsigned int _10;
+  long unsigned int _12;
+  long unsigned int _13;
+  long unsigned int _14;
+  long unsigned int _15;
+  long unsigned int _16;
+  long unsigned int _17;
+  long unsigned int _18;
+  long unsigned int _19;
+  long unsigned int _20;
+  long unsigned int _21;
+  long unsigned int _23;
+  long unsigned int _24;
+  long unsigned int _25;
+  long unsigned int _26;
+  long unsigned int _27;
+  long unsigned int _28;
+  long unsigned int _29;
+  long unsigned int _30;
+  long unsigned int ivtmp_34;
+  long unsigned int ivtmp_35;
+  long unsigned int ivtmp_36;
+  long unsigned int ivtmp_74;
+  long unsigned int _77;
+  long unsigned int prephitmp_78;
+  long unsigned int _81;
+  long unsigned int prephitmp_82;
+  long unsigned int _83;
+  long unsigned int prephitmp_84;
+
+  <bb 2> [local count: 10737416]:
+
+  <bb 3> [local count: 1063004409]:
+  # __k_57 = PHI <0(2), _3(14)>
+  # ivtmp_36 = PHI <227(2), ivtmp_74(14)>
+  _1 = this_40(D)->_M_x[__k_57];
+  _2 = _1 & 18446744071562067968;
+  _3 = __k_57 + 1;
+  _4 = this_40(D)->_M_x[_3];
+  _5 = _4 & 2147483647;
+  __y_41 = _2 | _5;
+  _6 = __k_57 + 397;
+  _7 = this_40(D)->_M_x[_6];
+  _8 = __y_41 >> 1;
+  _9 = _7 ^ _8;
+  _10 = __y_41 & 1;
+  if (_10 != 0)
+    goto <bb 4>; [50.00%]
+  else
+    goto <bb 5>; [50.00%]
+
+  <bb 4> [local count: 531502205]:
+  _77 = _9 ^ 2567483615;
+
+  <bb 5> [local count: 1063004409]:
+  # prephitmp_78 = PHI <_77(4), _9(3)>
+  this_40(D)->_M_x[__k_57] = prephitmp_78;
+  ivtmp_74 = ivtmp_36 - 1;
+  if (ivtmp_74 == 0)
+    goto <bb 12>; [1.01%]
+  else
+    goto <bb 14>; [98.99%]
+
+  <bb 14> [local count: 1052266996]:
+  goto <bb 3>; [100.00%]
+
+  <bb 12> [local count: 10737413]:
+
+  <bb 6> [local count: 1063004409]:
+  # __k_58 = PHI <227(12), _14(13)>
+  # ivtmp_34 = PHI <396(12), ivtmp_35(13)>
+  _12 = this_40(D)->_M_x[__k_58];
+  _13 = _12 & 18446744071562067968;
+  _14 = __k_58 + 1;
+  _15 = this_40(D)->_M_x[_14];
+  _16 = _15 & 2147483647;
+  __y_43 = _13 | _16;
+  _17 = __k_58 + 18446744073709551389;
+  _18 = this_40(D)->_M_x[_17];
+  _19 = __y_43 >> 1;
+  _20 = _18 ^ _19;
+  _21 = __y_43 & 1;
+  if (_21 != 0)
+    goto <bb 7>; [50.00%]
+  else
+    goto <bb 8>; [50.00%]
+
+  <bb 7> [local count: 531502205]:
+  _81 = _20 ^ 2567483615;
+
+  <bb 8> [local count: 1063004409]:
+  # prephitmp_82 = PHI <_81(7), _20(6)>
+  this_40(D)->_M_x[__k_58] = prephitmp_82;
+  ivtmp_35 = ivtmp_34 - 1;
+  if (ivtmp_35 == 0)
+    goto <bb 9>; [1.01%]
+  else
+    goto <bb 13>; [98.99%]
+
+  <bb 13> [local count: 1052266996]:
+  goto <bb 6>; [100.00%]
+
+  <bb 9> [local count: 10737416]:
+  _23 = this_40(D)->_M_x[623];
+  _24 = _23 & 18446744071562067968;
+  _25 = this_40(D)->_M_x[0];
+  _26 = _25 & 2147483647;
+  __y_45 = _24 | _26;
+  _27 = this_40(D)->_M_x[396];
+  _28 = __y_45 >> 1;
+  _29 = _27 ^ _28;
+  _30 = __y_45 & 1;
+  if (_30 != 0)
+    goto <bb 10>; [50.00%]
+  else
+    goto <bb 11>; [50.00%]
+
+  <bb 10> [local count: 5368708]:
+  _83 = _29 ^ 2567483615;
+
+  <bb 11> [local count: 10737416]:
+  # prephitmp_84 = PHI <_83(10), _29(9)>
+  this_40(D)->_M_x[623] = prephitmp_84;
+  this_40(D)->_M_p = 0;
+  return;
+
+}
+
+
+
+;; Function initialize (_Z10initializev, funcdef_no=3101, decl_uid=58636, cgraph_uid=980, symbol_order=985)
+
+initialize ()
+{
+  double __ret;
+  double __sum;
+  double __tmp;
+  size_t __k;
+  double D.62527;
+  double __ret;
+  double __sum;
+  double __tmp;
+  size_t __k;
+  double D.62521;
+  size_t __i;
+  long unsigned int __x;
+  long unsigned int __res;
+  long unsigned int __res;
+  long unsigned int __res;
+  size_type __dnew;
+  const struct string D.62491;
+  int j;
+  int i;
+  struct mt19937 gen;
+  struct random_device rd;
+  long unsigned int _1;
+  long unsigned int pretmp_5;
+  double _6;
+  double _9;
+  long unsigned int _10;
+  long unsigned int prephitmp_11;
+  unsigned int _22;
+  char * _38;
+  char * _39;
+  double _48;
+  double _51;
+  long unsigned int _53;
+  long unsigned int _54;
+  float prephitmp_55;
+  unsigned int ivtmp_57;
+  long unsigned int _59;
+  float _62;
+  double _77;
+  double _78;
+  unsigned int ivtmp_83;
+  long unsigned int ivtmp_84;
+  long unsigned int ivtmp_87;
+  unsigned int ivtmp_89;
+  unsigned int ivtmp_98;
+  unsigned int ivtmp_99;
+  unsigned int ivtmp_101;
+  unsigned int ivtmp_106;
+  unsigned int ivtmp_107;
+  float prephitmp_108;
+  double _119;
+  long unsigned int _137;
+  double _138;
+  float _148;
+  long unsigned int _150;
+  double _151;
+  double _152;
+
+  <bb 2> [local count: 108459]:
+  rd ={v} {CLOBBER};
+  MEM[(struct basic_string *)&D.62491] ={v} {CLOBBER};
+  MEM[(struct _Alloc_hider *)&D.62491] ={v} {CLOBBER};
+  MEM[(struct _Alloc_hider *)&D.62491]._M_p = &D.62491.D.19100._M_local_buf;
+  __builtin_memcpy (&D.62491.D.19100._M_local_buf, "default", 7);
+  D.62491._M_string_length = 7;
+  MEM[(char_type &)&D.62491 + 23] = 0;
+  std::random_device::_M_init (&rd, &D.62491);
+
+  <bb 3> [local count: 108459]:
+  _38 = D.62491._M_dataplus._M_p;
+  if (&D.62491.D.19100._M_local_buf != _38)
+    goto <bb 4>; [53.47%]
+  else
+    goto <bb 5>; [46.53%]
+
+  <bb 4> [local count: 57993]:
+  operator delete (_38);
+
+  <bb 5> [local count: 108459]:
+  D.62491 ={v} {CLOBBER};
+  D.62491 ={v} {CLOBBER};
+  _22 = std::random_device::_M_getval (&rd);
+  goto <bb 9>; [100.00%]
+
+  <bb 6> [count: 0]:
+<L14>:
+  _39 = D.62491._M_dataplus._M_p;
+  if (&D.62491.D.19100._M_local_buf != _39)
+    goto <bb 7>; [0.00%]
+  else
+    goto <bb 8>; [0.00%]
+
+  <bb 7> [count: 0]:
+  operator delete (_39);
+
+  <bb 8> [count: 0]:
+  D.62491 ={v} {CLOBBER};
+  resx 7
+
+  <bb 9> [local count: 108459]:
+  _1 = (long unsigned int) _22;
+  MEM[(struct mersenne_twister_engine *)&gen] ={v} {CLOBBER};
+  gen._M_x[0] = _1;
+
+  <bb 10> [local count: 10737575]:
+  # __i_94 = PHI <1(9), __i_65(11)>
+  # prephitmp_11 = PHI <_1(9), pretmp_5(11)>
+  # ivtmp_87 = PHI <623(9), ivtmp_84(11)>
+  _59 = prephitmp_11 >> 30;
+  __x_60 = prephitmp_11 ^ _59;
+  __x_61 = __x_60 * 1812433253;
+  __x_63 = __x_61 + __i_94;
+  __res_64 = __x_63 & 4294967295;
+  gen._M_x[__i_94] = __res_64;
+  __i_65 = __i_94 + 1;
+  ivtmp_84 = ivtmp_87 - 1;
+  if (ivtmp_84 == 0)
+    goto <bb 12>; [1.01%]
+  else
+    goto <bb 11>; [98.99%]
+
+  <bb 11> [local count: 10629115]:
+  _10 = __i_65 + 18446744073709551615;
+  pretmp_5 = gen._M_x[_10];
+  goto <bb 10>; [100.00%]
+
+  <bb 12> [local count: 108459]:
+  gen._M_p = 624;
+
+  <bb 13> [local count: 10737574]:
+  # i_85 = PHI <0(12), i_16(28)>
+  # ivtmp_98 = PHI <2100(12), ivtmp_89(28)>
+
+  <bb 14> [local count: 1063019845]:
+  # j_86 = PHI <0(13), j_15(29)>
+  # ivtmp_106 = PHI <2000(13), ivtmp_99(29)>
+  _137 = std::mersenne_twister_engine<long unsigned int, 32, 624, 397, 31, 2567483615, 11, 4294967295, 7, 2636928640, 15, 4022730752, 18, 1812433253>::operator() (&gen);
+  _138 = (double) _137;
+  _150 = std::mersenne_twister_engine<long unsigned int, 32, 624, 397, 31, 2567483615, 11, 4294967295, 7, 2636928640, 15, 4022730752, 18, 1812433253>::operator() (&gen);
+  _151 = (double) _150;
+  _152 = _151 * 4.294967296e+9;
+  __sum_153 = _138 + _152;
+  __ret_79 = __sum_153 * 5.42101086242752217003726400434970855712890625e-20;
+  if (__ret_79 >= 1.0e+0)
+    goto <bb 16>; [10.00%]
+  else
+    goto <bb 15>; [90.00%]
+
+  <bb 15> [local count: 956717859]:
+  _9 = __ret_79 * 9.0e+0;
+  _6 = _9 + 1.0e+0;
+  _148 = (float) _6;
+
+  <bb 16> [local count: 1063019844]:
+  # prephitmp_108 = PHI <_148(15), 1.0e+1(14)>
+  A[i_85][j_86] = prephitmp_108;
+  j_15 = j_86 + 1;
+  ivtmp_99 = ivtmp_106 - 1;
+  if (ivtmp_99 == 0)
+    goto <bb 17>; [1.01%]
+  else
+    goto <bb 29>; [98.99%]
+
+  <bb 29> [local count: 1052282275]:
+  goto <bb 14>; [100.00%]
+
+  <bb 17> [local count: 10737575]:
+  i_16 = i_85 + 1;
+  ivtmp_89 = ivtmp_98 - 1;
+  if (ivtmp_89 == 0)
+    goto <bb 25>; [1.01%]
+  else
+    goto <bb 28>; [98.99%]
+
+  <bb 28> [local count: 10629115]:
+  goto <bb 13>; [100.00%]
+
+  <bb 25> [local count: 108460]:
+
+  <bb 18> [local count: 10737574]:
+  # i_135 = PHI <0(25), i_19(26)>
+  # ivtmp_57 = PHI <2000(25), ivtmp_107(26)>
+
+  <bb 19> [local count: 1063019845]:
+  # j_88 = PHI <0(18), j_18(27)>
+  # ivtmp_83 = PHI <1600(18), ivtmp_101(27)>
+  _54 = std::mersenne_twister_engine<long unsigned int, 32, 624, 397, 31, 2567483615, 11, 4294967295, 7, 2636928640, 15, 4022730752, 18, 1812433253>::operator() (&gen);
+  _119 = (double) _54;
+  _53 = std::mersenne_twister_engine<long unsigned int, 32, 624, 397, 31, 2567483615, 11, 4294967295, 7, 2636928640, 15, 4022730752, 18, 1812433253>::operator() (&gen);
+  _77 = (double) _53;
+  _78 = _77 * 4.294967296e+9;
+  __sum_134 = _78 + _119;
+  __ret_97 = __sum_134 * 5.42101086242752217003726400434970855712890625e-20;
+  if (__ret_97 >= 1.0e+0)
+    goto <bb 21>; [10.00%]
+  else
+    goto <bb 20>; [90.00%]
+
+  <bb 20> [local count: 956717859]:
+  _51 = __ret_97 * 9.0e+0;
+  _48 = _51 + 1.0e+0;
+  _62 = (float) _48;
+
+  <bb 21> [local count: 1063019844]:
+  # prephitmp_55 = PHI <_62(20), 1.0e+1(19)>
+  B[i_135][j_88] = prephitmp_55;
+  j_18 = j_88 + 1;
+  ivtmp_101 = ivtmp_83 - 1;
+  if (ivtmp_101 == 0)
+    goto <bb 22>; [1.01%]
+  else
+    goto <bb 27>; [98.99%]
+
+  <bb 27> [local count: 1052282275]:
+  goto <bb 19>; [100.00%]
+
+  <bb 22> [local count: 10737574]:
+  i_19 = i_135 + 1;
+  ivtmp_107 = ivtmp_57 - 1;
+  if (ivtmp_107 == 0)
+    goto <bb 23>; [1.01%]
+  else
+    goto <bb 26>; [98.99%]
+
+  <bb 26> [local count: 10629114]:
+  goto <bb 18>; [100.00%]
+
+  <bb 23> [local count: 108459]:
+  std::random_device::_M_fini (&rd);
+  rd ={v} {CLOBBER};
+  rd ={v} {CLOBBER};
+  gen ={v} {CLOBBER};
+  return;
+
+  <bb 24> [count: 0]:
+<L12>:
+  std::random_device::_M_fini (&rd);
+  rd ={v} {CLOBBER};
+  resx 2
+
+}
+
+

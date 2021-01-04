@@ -1,0 +1,14 @@
+rm unroll
+rm no-unroll
+rm unroll-prev-7
+
+g++-8 -O2  -std=c++11 nounroll.cpp -o unroll  
+g++-8 -O2  -std=c++11 nounroll.cpp -o no-unroll -fno-unroll-loops
+g++-8 -O2  -std=c++11 unroll-prev-7.cpp -o unroll-prev-7 -fno-unroll-loops
+
+
+for i in {1..30} 
+./no-unroll 1 1 >> no-unroll.txt
+./unroll 1 1 >> unroll.txt
+./unroll-prev-7 1 1 >> unroll-prev-7.txt
+

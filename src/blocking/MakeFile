@@ -1,0 +1,29 @@
+CC=g++-8
+Option=-std=c++11 -O2 -fno-dce
+
+mkfile_path = $(abspath $(lastword $(MAKEFILE_LIST)))
+mkfile_dir = $(dir $(mkfile_path))
+build_dir = $(dir $(mkfile_path))/
+test_dir = $(dir $(mkfile_path))../../test/bin/
+file=$(mkfile_dir)manual-blocking.cpp
+
+MACRO=250 500 750 1000 1250 1500
+
+
+all: 
+	for f in $(MACRO) ; do \
+		echo "$(CC) $(Option) -DBLOCK_SIZE=$$f $(file) -o $(build_dir)$$f"; \
+		$(CC) $(Option) -DBLOCK_SIZE=$$f $(file) -o $(build_dir)$$f; \
+	done
+
+test:
+	for f in $(MACRO) ; do \
+		echo "$(CC) $(Option) $(file) -DBLOCK_SIZE=$$f -DCHECK_ACCURACY -o $(test_dir)$$f"; \
+		$(CC) $(Option) $(file) -DBLOCK_SIZE=$$f -DCHECK_ACCURACY -o $(test_dir)$$f; \
+	done
+clean:
+	for f in $(MACRO) ; do \
+		rm -rf $(test_dir)$$f; \
+	done
+
+.PHONY: all

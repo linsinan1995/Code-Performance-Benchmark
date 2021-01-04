@@ -1,0 +1,1373 @@
+   1              		.file	"unroll-prev-7.cpp"
+   2              	# GNU C++11 (Ubuntu 5.5.0-12ubuntu1) version 5.5.0 20171010 (x86_64-linux-gnu)
+   3              	#	compiled by GNU C version 5.5.0 20171010, GMP version 6.1.2, MPFR version 4.0.1, MPC version 1.1.
+   4              	# GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+   5              	# options passed:  -imultiarch x86_64-linux-gnu -D_GNU_SOURCE
+   6              	# unroll-prev-7.cpp -mtune=generic -march=x86-64 -auxbase-strip unroll.s -g
+   7              	# -O2 -std=c++11 -fverbose-asm -fstack-protector-strong -Wformat
+   8              	# -Wformat-security
+   9              	# options enabled:  -fPIC -fPIE -faggressive-loop-optimizations
+  10              	# -falign-labels -fasynchronous-unwind-tables -fauto-inc-dec
+  11              	# -fbranch-count-reg -fcaller-saves -fchkp-check-incomplete-type
+  12              	# -fchkp-check-read -fchkp-check-write -fchkp-instrument-calls
+  13              	# -fchkp-narrow-bounds -fchkp-optimize -fchkp-store-bounds
+  14              	# -fchkp-use-static-bounds -fchkp-use-static-const-bounds
+  15              	# -fchkp-use-wrappers -fcombine-stack-adjustments -fcommon -fcompare-elim
+  16              	# -fcprop-registers -fcrossjumping -fcse-follow-jumps -fdefer-pop
+  17              	# -fdelete-null-pointer-checks -fdevirtualize -fdevirtualize-speculatively
+  18              	# -fdwarf2-cfi-asm -fearly-inlining -feliminate-unused-debug-types
+  19              	# -fexceptions -fexpensive-optimizations -fforward-propagate -ffunction-cse
+  20              	# -fgcse -fgcse-lm -fgnu-runtime -fgnu-unique -fguess-branch-probability
+  21              	# -fhoist-adjacent-loads -fident -fif-conversion -fif-conversion2
+  22              	# -findirect-inlining -finline -finline-atomics
+  23              	# -finline-functions-called-once -finline-small-functions -fipa-cp
+  24              	# -fipa-cp-alignment -fipa-icf -fipa-icf-functions -fipa-icf-variables
+  25              	# -fipa-profile -fipa-pure-const -fipa-ra -fipa-reference -fipa-sra
+  26              	# -fira-hoist-pressure -fira-share-save-slots -fira-share-spill-slots
+  27              	# -fisolate-erroneous-paths-dereference -fivopts -fkeep-static-consts
+  28              	# -fleading-underscore -flifetime-dse -flra-remat -flto-odr-type-merging
+  29              	# -fmath-errno -fmerge-constants -fmerge-debug-strings
+  30              	# -fmove-loop-invariants -fomit-frame-pointer -foptimize-sibling-calls
+  31              	# -foptimize-strlen -fpartial-inlining -fpeephole -fpeephole2
+  32              	# -fprefetch-loop-arrays -free -freg-struct-return -freorder-blocks
+  33              	# -freorder-blocks-and-partition -freorder-functions -frerun-cse-after-loop
+  34              	# -fsched-critical-path-heuristic -fsched-dep-count-heuristic
+  35              	# -fsched-group-heuristic -fsched-interblock -fsched-last-insn-heuristic
+  36              	# -fsched-rank-heuristic -fsched-spec -fsched-spec-insn-heuristic
+  37              	# -fsched-stalled-insns-dep -fschedule-fusion -fschedule-insns2
+  38              	# -fsemantic-interposition -fshow-column -fshrink-wrap -fsigned-zeros
+  39              	# -fsplit-ivs-in-unroller -fsplit-wide-types -fssa-phiopt
+  40              	# -fstack-protector-strong -fstdarg-opt -fstrict-aliasing -fstrict-overflow
+  41              	# -fstrict-volatile-bitfields -fsync-libcalls -fthread-jumps
+  42              	# -ftoplevel-reorder -ftrapping-math -ftree-bit-ccp -ftree-builtin-call-dce
+  43              	# -ftree-ccp -ftree-ch -ftree-coalesce-vars -ftree-copy-prop
+  44              	# -ftree-copyrename -ftree-cselim -ftree-dce -ftree-dominator-opts
+  45              	# -ftree-dse -ftree-forwprop -ftree-fre -ftree-loop-if-convert
+  46              	# -ftree-loop-im -ftree-loop-ivcanon -ftree-loop-optimize
+  47              	# -ftree-parallelize-loops= -ftree-phiprop -ftree-pre -ftree-pta
+  48              	# -ftree-reassoc -ftree-scev-cprop -ftree-sink -ftree-slsr -ftree-sra
+  49              	# -ftree-switch-conversion -ftree-tail-merge -ftree-ter -ftree-vrp
+  50              	# -funit-at-a-time -funwind-tables -fvar-tracking
+  51              	# -fvar-tracking-assignments -fverbose-asm -fzero-initialized-in-bss
+  52              	# -m128bit-long-double -m64 -m80387 -malign-stringops
+  53              	# -mavx256-split-unaligned-load -mavx256-split-unaligned-store
+  54              	# -mfancy-math-387 -mfp-ret-in-387 -mfxsr -mglibc -mieee-fp
+  55              	# -mlong-double-80 -mmmx -mno-sse4 -mpush-args -mred-zone -msse -msse2
+  56              	# -mtls-direct-seg-refs -mvzeroupper
+  57              	
+  58              		.text
+  59              	.Ltext0:
+  60              		.section	.text.unlikely,"ax",@progbits
+  61              	.LCOLDB1:
+  62              		.text
+  63              	.LHOTB1:
+  64              		.p2align 4,,15
+  65              		.section	.text.unlikely
+  66              	.Ltext_cold0:
+  67              		.text
+  68              		.globl	_Z8getFloatv
+  70              	_Z8getFloatv:
+  71              	.LFB309:
+  72              		.file 1 "unroll-prev-7.cpp"
+   1:unroll-prev-7.cpp **** #include <chrono>
+   2:unroll-prev-7.cpp **** #include <stdio.h> 
+   3:unroll-prev-7.cpp **** #include <stdlib.h> 
+   4:unroll-prev-7.cpp **** 
+   5:unroll-prev-7.cpp **** using namespace std;
+   6:unroll-prev-7.cpp **** 
+   7:unroll-prev-7.cpp **** #define display(mat, nRow, nCol) for (int i = 0; i < nRow; i++) { \
+   8:unroll-prev-7.cpp ****                                     for (int j = 0; j < nCol; j++) \
+   9:unroll-prev-7.cpp ****                                         printf("%4f ", mat[i][j]); \
+  10:unroll-prev-7.cpp ****                                 printf("\n");} \
+  11:unroll-prev-7.cpp ****                                 printf("\n")
+  12:unroll-prev-7.cpp **** 
+  13:unroll-prev-7.cpp **** 
+  14:unroll-prev-7.cpp **** #define N 2100
+  15:unroll-prev-7.cpp **** #define M 1600
+  16:unroll-prev-7.cpp **** #define P 2000
+  17:unroll-prev-7.cpp **** 
+  18:unroll-prev-7.cpp **** float A[N][P];
+  19:unroll-prev-7.cpp **** float B[P][M];
+  20:unroll-prev-7.cpp **** float C[N][M];
+  21:unroll-prev-7.cpp **** 
+  22:unroll-prev-7.cpp **** float getFloat() {
+  73              		.loc 1 22 0
+  74              		.cfi_startproc
+  75 0000 4883EC08 		subq	$8, %rsp	#,
+  76              		.cfi_def_cfa_offset 16
+  23:unroll-prev-7.cpp ****     return rand()/(float)(RAND_MAX/1.0);
+  77              		.loc 1 23 0
+  78 0004 E8000000 		call	rand@PLT	#
+  78      00
+  79              	.LVL0:
+  80 0009 660FEFC0 		pxor	%xmm0, %xmm0	# D.10916
+  81 000d F30F2AC0 		cvtsi2ss	%eax, %xmm0	# D.10915, D.10916
+  82 0011 F30F5905 		mulss	.LC0(%rip), %xmm0	#, D.10916
+  82      00000000 
+  24:unroll-prev-7.cpp **** }
+  83              		.loc 1 24 0
+  84 0019 4883C408 		addq	$8, %rsp	#,
+  85              		.cfi_def_cfa_offset 8
+  86 001d C3       		ret
+  87              		.cfi_endproc
+  88              	.LFE309:
+  90              		.section	.text.unlikely
+  91              	.LCOLDE1:
+  92              		.text
+  93              	.LHOTE1:
+  94              		.section	.text.unlikely
+  95              	.LCOLDB2:
+  96              		.text
+  97              	.LHOTB2:
+  98 001e 6690     		.p2align 4,,15
+  99              		.globl	_Z10initializev
+ 101              	_Z10initializev:
+ 102              	.LFB310:
+  25:unroll-prev-7.cpp **** 
+  26:unroll-prev-7.cpp **** 
+  27:unroll-prev-7.cpp **** void initialize() {
+ 103              		.loc 1 27 0
+ 104              		.cfi_startproc
+ 105              	.LVL1:
+ 106 0020 4154     		pushq	%r12	#
+ 107              		.cfi_def_cfa_offset 16
+ 108              		.cfi_offset 12, -16
+ 109 0022 55       		pushq	%rbp	#
+ 110              		.cfi_def_cfa_offset 24
+ 111              		.cfi_offset 6, -24
+ 112 0023 53       		pushq	%rbx	#
+ 113              		.cfi_def_cfa_offset 32
+ 114              		.cfi_offset 3, -32
+ 115 0024 488D1D00 		leaq	A(%rip), %rbx	#, ivtmp.72
+ 115      000000
+ 116 002b 4C8DA300 		leaq	16800000(%rbx), %r12	#, D.10957
+ 116      590001
+ 117              	.LVL2:
+ 118              		.p2align 4,,10
+ 119 0032 660F1F44 		.p2align 3
+ 119      0000
+ 120              	.L5:
+ 121 0038 488DAB40 		leaq	8000(%rbx), %rbp	#, D.10957
+ 121      1F0000
+ 122              	.LVL3:
+ 123 003f 90       		.p2align 4,,10
+ 124              		.p2align 3
+ 125              	.L4:
+ 126              	.LBB87:
+ 127              	.LBB88:
+  23:unroll-prev-7.cpp **** }
+ 128              		.loc 1 23 0
+ 129 0040 E8000000 		call	rand@PLT	#
+ 129      00
+ 130              	.LVL4:
+ 131              	.LBE88:
+ 132              	.LBE87:
+  28:unroll-prev-7.cpp ****     int i,j;
+  29:unroll-prev-7.cpp ****     for (i = 0; i < N; i++) {
+  30:unroll-prev-7.cpp ****         for (j = 0; j < P; j++) {
+  31:unroll-prev-7.cpp ****             A[i][j] = getFloat();
+ 133              		.loc 1 31 0
+ 134 0045 660FEFC0 		pxor	%xmm0, %xmm0	# D.10956
+ 135 0049 4883C304 		addq	$4, %rbx	#, ivtmp.72
+ 136 004d F30F2AC0 		cvtsi2ss	%eax, %xmm0	# D.10955, D.10956
+ 137 0051 F30F5905 		mulss	.LC0(%rip), %xmm0	#, D.10956
+ 137      00000000 
+ 138 0059 F30F1143 		movss	%xmm0, -4(%rbx)	# D.10956, MEM[base: _19, offset: 0B]
+ 138      FC
+  30:unroll-prev-7.cpp ****             A[i][j] = getFloat();
+ 139              		.loc 1 30 0
+ 140 005e 4839EB   		cmpq	%rbp, %rbx	# D.10957, ivtmp.72
+ 141 0061 75DD     		jne	.L4	#,
+  29:unroll-prev-7.cpp ****         for (j = 0; j < P; j++) {
+ 142              		.loc 1 29 0 discriminator 2
+ 143 0063 4939DC   		cmpq	%rbx, %r12	# ivtmp.72, D.10957
+ 144 0066 75D0     		jne	.L5	#,
+ 145 0068 488D1D00 		leaq	B(%rip), %rbx	#, ivtmp.55
+ 145      000000
+ 146 006f 4C8D2500 		leaq	12800000+B(%rip), %r12	#, D.10957
+ 146      000000
+ 147 0076 662E0F1F 		.p2align 4,,10
+ 147      84000000 
+ 147      0000
+ 148              		.p2align 3
+ 149              	.L7:
+ 150              	.LVL5:
+ 151 0080 488DAB00 		leaq	6400(%rbx), %rbp	#, D.10957
+ 151      190000
+ 152              	.LVL6:
+ 153 0087 660F1F84 		.p2align 4,,10
+ 153      00000000 
+ 153      00
+ 154              		.p2align 3
+ 155              	.L6:
+ 156              	.LBB89:
+ 157              	.LBB90:
+  23:unroll-prev-7.cpp **** }
+ 158              		.loc 1 23 0
+ 159 0090 E8000000 		call	rand@PLT	#
+ 159      00
+ 160              	.LVL7:
+ 161              	.LBE90:
+ 162              	.LBE89:
+  32:unroll-prev-7.cpp ****         }
+  33:unroll-prev-7.cpp ****     }
+  34:unroll-prev-7.cpp **** 
+  35:unroll-prev-7.cpp ****     for (i = 0; i < P; i++) {
+  36:unroll-prev-7.cpp ****         for (j = 0; j < M; j++) {
+  37:unroll-prev-7.cpp ****             B[i][j] = getFloat();
+ 163              		.loc 1 37 0
+ 164 0095 660FEFC0 		pxor	%xmm0, %xmm0	# D.10956
+ 165 0099 4883C304 		addq	$4, %rbx	#, ivtmp.55
+ 166 009d F30F2AC0 		cvtsi2ss	%eax, %xmm0	# D.10955, D.10956
+ 167 00a1 F30F5905 		mulss	.LC0(%rip), %xmm0	#, D.10956
+ 167      00000000 
+ 168 00a9 F30F1143 		movss	%xmm0, -4(%rbx)	# D.10956, MEM[base: _6, offset: 0B]
+ 168      FC
+  36:unroll-prev-7.cpp ****             B[i][j] = getFloat();
+ 169              		.loc 1 36 0
+ 170 00ae 4839EB   		cmpq	%rbp, %rbx	# D.10957, ivtmp.55
+ 171 00b1 75DD     		jne	.L6	#,
+  35:unroll-prev-7.cpp ****         for (j = 0; j < M; j++) {
+ 172              		.loc 1 35 0 discriminator 2
+ 173 00b3 4939DC   		cmpq	%rbx, %r12	# ivtmp.55, D.10957
+ 174 00b6 75C8     		jne	.L7	#,
+  38:unroll-prev-7.cpp ****         }
+  39:unroll-prev-7.cpp ****     }
+  40:unroll-prev-7.cpp **** }
+ 175              		.loc 1 40 0
+ 176 00b8 5B       		popq	%rbx	#
+ 177              		.cfi_def_cfa_offset 24
+ 178 00b9 5D       		popq	%rbp	#
+ 179              		.cfi_def_cfa_offset 16
+ 180 00ba 415C     		popq	%r12	#
+ 181              		.cfi_def_cfa_offset 8
+ 182 00bc C3       		ret
+ 183              		.cfi_endproc
+ 184              	.LFE310:
+ 186              		.section	.text.unlikely
+ 187              	.LCOLDE2:
+ 188              		.text
+ 189              	.LHOTE2:
+ 190              		.section	.rodata.str1.8,"aMS",@progbits,1
+ 191              		.align 8
+ 192              	.LC3:
+ 193 0000 52657175 		.string	"Require 2 parameters, but it gets %d.\n"
+ 193      69726520 
+ 193      32207061 
+ 193      72616D65 
+ 193      74657273 
+ 194 0027 00       		.align 8
+ 195              	.LC4:
+ 196 0028 496E6465 		.string	"Index is out of the matrix size\n"
+ 196      78206973 
+ 196      206F7574 
+ 196      206F6620 
+ 196      74686520 
+ 197              		.section	.rodata.str1.1,"aMS",@progbits,1
+ 198              	.LC5:
+ 199 0000 2532660A 		.string	"%2f\n"
+ 199      00
+ 200              	.LC7:
+ 201 0005 54696D65 		.string	"Timer: \n%2f\n"
+ 201      723A200A 
+ 201      2532660A 
+ 201      00
+ 202              		.section	.text.unlikely
+ 203              	.LCOLDB8:
+ 204              		.section	.text.startup,"ax",@progbits
+ 205              	.LHOTB8:
+ 206              		.p2align 4,,15
+ 207              		.globl	main
+ 209              	main:
+ 210              	.LFB311:
+  41:unroll-prev-7.cpp **** 
+  42:unroll-prev-7.cpp **** int main(int argc, char *argv[])
+  43:unroll-prev-7.cpp **** {
+ 211              		.loc 1 43 0
+ 212              		.cfi_startproc
+ 213              	.LVL8:
+ 214 0000 4154     		pushq	%r12	#
+ 215              		.cfi_def_cfa_offset 16
+ 216              		.cfi_offset 12, -16
+ 217 0002 55       		pushq	%rbp	#
+ 218              		.cfi_def_cfa_offset 24
+ 219              		.cfi_offset 6, -24
+ 220 0003 53       		pushq	%rbx	#
+ 221              		.cfi_def_cfa_offset 32
+ 222              		.cfi_offset 3, -32
+ 223 0004 4883EC10 		subq	$16, %rsp	#,
+ 224              		.cfi_def_cfa_offset 48
+  44:unroll-prev-7.cpp ****     if (argc != 3) {
+ 225              		.loc 1 44 0
+ 226 0008 83FF03   		cmpl	$3, %edi	#, argc
+ 227 000b 0F851D02 		jne	.L26	#,
+ 227      0000
+ 228              	.LBB91:
+ 229              	.LBB92:
+ 230              		.file 2 "/usr/include/stdlib.h"
+   1:/usr/include/stdlib.h **** /* Copyright (C) 1991-2018 Free Software Foundation, Inc.
+   2:/usr/include/stdlib.h ****    This file is part of the GNU C Library.
+   3:/usr/include/stdlib.h **** 
+   4:/usr/include/stdlib.h ****    The GNU C Library is free software; you can redistribute it and/or
+   5:/usr/include/stdlib.h ****    modify it under the terms of the GNU Lesser General Public
+   6:/usr/include/stdlib.h ****    License as published by the Free Software Foundation; either
+   7:/usr/include/stdlib.h ****    version 2.1 of the License, or (at your option) any later version.
+   8:/usr/include/stdlib.h **** 
+   9:/usr/include/stdlib.h ****    The GNU C Library is distributed in the hope that it will be useful,
+  10:/usr/include/stdlib.h ****    but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:/usr/include/stdlib.h ****    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  12:/usr/include/stdlib.h ****    Lesser General Public License for more details.
+  13:/usr/include/stdlib.h **** 
+  14:/usr/include/stdlib.h ****    You should have received a copy of the GNU Lesser General Public
+  15:/usr/include/stdlib.h ****    License along with the GNU C Library; if not, see
+  16:/usr/include/stdlib.h ****    <http://www.gnu.org/licenses/>.  */
+  17:/usr/include/stdlib.h **** 
+  18:/usr/include/stdlib.h **** /*
+  19:/usr/include/stdlib.h ****  *	ISO C99 Standard: 7.20 General utilities	<stdlib.h>
+  20:/usr/include/stdlib.h ****  */
+  21:/usr/include/stdlib.h **** 
+  22:/usr/include/stdlib.h **** #ifndef	_STDLIB_H
+  23:/usr/include/stdlib.h **** 
+  24:/usr/include/stdlib.h **** #define __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION
+  25:/usr/include/stdlib.h **** #include <bits/libc-header-start.h>
+  26:/usr/include/stdlib.h **** 
+  27:/usr/include/stdlib.h **** /* Get size_t, wchar_t and NULL from <stddef.h>.  */
+  28:/usr/include/stdlib.h **** #define __need_size_t
+  29:/usr/include/stdlib.h **** #define __need_wchar_t
+  30:/usr/include/stdlib.h **** #define __need_NULL
+  31:/usr/include/stdlib.h **** #include <stddef.h>
+  32:/usr/include/stdlib.h **** 
+  33:/usr/include/stdlib.h **** __BEGIN_DECLS
+  34:/usr/include/stdlib.h **** 
+  35:/usr/include/stdlib.h **** #define	_STDLIB_H	1
+  36:/usr/include/stdlib.h **** 
+  37:/usr/include/stdlib.h **** #if (defined __USE_XOPEN || defined __USE_XOPEN2K8) && !defined _SYS_WAIT_H
+  38:/usr/include/stdlib.h **** /* XPG requires a few symbols from <sys/wait.h> being defined.  */
+  39:/usr/include/stdlib.h **** # include <bits/waitflags.h>
+  40:/usr/include/stdlib.h **** # include <bits/waitstatus.h>
+  41:/usr/include/stdlib.h **** 
+  42:/usr/include/stdlib.h **** /* Define the macros <sys/wait.h> also would define this way.  */
+  43:/usr/include/stdlib.h **** # define WEXITSTATUS(status)	__WEXITSTATUS (status)
+  44:/usr/include/stdlib.h **** # define WTERMSIG(status)	__WTERMSIG (status)
+  45:/usr/include/stdlib.h **** # define WSTOPSIG(status)	__WSTOPSIG (status)
+  46:/usr/include/stdlib.h **** # define WIFEXITED(status)	__WIFEXITED (status)
+  47:/usr/include/stdlib.h **** # define WIFSIGNALED(status)	__WIFSIGNALED (status)
+  48:/usr/include/stdlib.h **** # define WIFSTOPPED(status)	__WIFSTOPPED (status)
+  49:/usr/include/stdlib.h **** # ifdef __WIFCONTINUED
+  50:/usr/include/stdlib.h **** #  define WIFCONTINUED(status)	__WIFCONTINUED (status)
+  51:/usr/include/stdlib.h **** # endif
+  52:/usr/include/stdlib.h **** #endif	/* X/Open or XPG7 and <sys/wait.h> not included.  */
+  53:/usr/include/stdlib.h **** 
+  54:/usr/include/stdlib.h **** /* _FloatN API tests for enablement.  */
+  55:/usr/include/stdlib.h **** #include <bits/floatn.h>
+  56:/usr/include/stdlib.h **** 
+  57:/usr/include/stdlib.h **** /* Returned by `div'.  */
+  58:/usr/include/stdlib.h **** typedef struct
+  59:/usr/include/stdlib.h ****   {
+  60:/usr/include/stdlib.h ****     int quot;			/* Quotient.  */
+  61:/usr/include/stdlib.h ****     int rem;			/* Remainder.  */
+  62:/usr/include/stdlib.h ****   } div_t;
+  63:/usr/include/stdlib.h **** 
+  64:/usr/include/stdlib.h **** /* Returned by `ldiv'.  */
+  65:/usr/include/stdlib.h **** #ifndef __ldiv_t_defined
+  66:/usr/include/stdlib.h **** typedef struct
+  67:/usr/include/stdlib.h ****   {
+  68:/usr/include/stdlib.h ****     long int quot;		/* Quotient.  */
+  69:/usr/include/stdlib.h ****     long int rem;		/* Remainder.  */
+  70:/usr/include/stdlib.h ****   } ldiv_t;
+  71:/usr/include/stdlib.h **** # define __ldiv_t_defined	1
+  72:/usr/include/stdlib.h **** #endif
+  73:/usr/include/stdlib.h **** 
+  74:/usr/include/stdlib.h **** #if defined __USE_ISOC99 && !defined __lldiv_t_defined
+  75:/usr/include/stdlib.h **** /* Returned by `lldiv'.  */
+  76:/usr/include/stdlib.h **** __extension__ typedef struct
+  77:/usr/include/stdlib.h ****   {
+  78:/usr/include/stdlib.h ****     long long int quot;		/* Quotient.  */
+  79:/usr/include/stdlib.h ****     long long int rem;		/* Remainder.  */
+  80:/usr/include/stdlib.h ****   } lldiv_t;
+  81:/usr/include/stdlib.h **** # define __lldiv_t_defined	1
+  82:/usr/include/stdlib.h **** #endif
+  83:/usr/include/stdlib.h **** 
+  84:/usr/include/stdlib.h **** 
+  85:/usr/include/stdlib.h **** /* The largest number rand will return (same as INT_MAX).  */
+  86:/usr/include/stdlib.h **** #define	RAND_MAX	2147483647
+  87:/usr/include/stdlib.h **** 
+  88:/usr/include/stdlib.h **** 
+  89:/usr/include/stdlib.h **** /* We define these the same for all machines.
+  90:/usr/include/stdlib.h ****    Changes from this to the outside world should be done in `_exit'.  */
+  91:/usr/include/stdlib.h **** #define	EXIT_FAILURE	1	/* Failing exit status.  */
+  92:/usr/include/stdlib.h **** #define	EXIT_SUCCESS	0	/* Successful exit status.  */
+  93:/usr/include/stdlib.h **** 
+  94:/usr/include/stdlib.h **** 
+  95:/usr/include/stdlib.h **** /* Maximum length of a multibyte character in the current locale.  */
+  96:/usr/include/stdlib.h **** #define	MB_CUR_MAX	(__ctype_get_mb_cur_max ())
+  97:/usr/include/stdlib.h **** extern size_t __ctype_get_mb_cur_max (void) __THROW __wur;
+  98:/usr/include/stdlib.h **** 
+  99:/usr/include/stdlib.h **** 
+ 100:/usr/include/stdlib.h **** /* Convert a string to a floating-point number.  */
+ 101:/usr/include/stdlib.h **** extern double atof (const char *__nptr)
+ 102:/usr/include/stdlib.h ****      __THROW __attribute_pure__ __nonnull ((1)) __wur;
+ 103:/usr/include/stdlib.h **** /* Convert a string to an integer.  */
+ 104:/usr/include/stdlib.h **** extern int atoi (const char *__nptr)
+ 105:/usr/include/stdlib.h ****      __THROW __attribute_pure__ __nonnull ((1)) __wur;
+ 106:/usr/include/stdlib.h **** /* Convert a string to a long integer.  */
+ 107:/usr/include/stdlib.h **** extern long int atol (const char *__nptr)
+ 108:/usr/include/stdlib.h ****      __THROW __attribute_pure__ __nonnull ((1)) __wur;
+ 109:/usr/include/stdlib.h **** 
+ 110:/usr/include/stdlib.h **** #ifdef __USE_ISOC99
+ 111:/usr/include/stdlib.h **** /* Convert a string to a long long integer.  */
+ 112:/usr/include/stdlib.h **** __extension__ extern long long int atoll (const char *__nptr)
+ 113:/usr/include/stdlib.h ****      __THROW __attribute_pure__ __nonnull ((1)) __wur;
+ 114:/usr/include/stdlib.h **** #endif
+ 115:/usr/include/stdlib.h **** 
+ 116:/usr/include/stdlib.h **** /* Convert a string to a floating-point number.  */
+ 117:/usr/include/stdlib.h **** extern double strtod (const char *__restrict __nptr,
+ 118:/usr/include/stdlib.h **** 		      char **__restrict __endptr)
+ 119:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 120:/usr/include/stdlib.h **** 
+ 121:/usr/include/stdlib.h **** #ifdef	__USE_ISOC99
+ 122:/usr/include/stdlib.h **** /* Likewise for `float' and `long double' sizes of floating-point numbers.  */
+ 123:/usr/include/stdlib.h **** extern float strtof (const char *__restrict __nptr,
+ 124:/usr/include/stdlib.h **** 		     char **__restrict __endptr) __THROW __nonnull ((1));
+ 125:/usr/include/stdlib.h **** 
+ 126:/usr/include/stdlib.h **** extern long double strtold (const char *__restrict __nptr,
+ 127:/usr/include/stdlib.h **** 			    char **__restrict __endptr)
+ 128:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 129:/usr/include/stdlib.h **** #endif
+ 130:/usr/include/stdlib.h **** 
+ 131:/usr/include/stdlib.h **** /* Likewise for '_FloatN' and '_FloatNx'.  */
+ 132:/usr/include/stdlib.h **** 
+ 133:/usr/include/stdlib.h **** #if __HAVE_FLOAT16 && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 134:/usr/include/stdlib.h **** extern _Float16 strtof16 (const char *__restrict __nptr,
+ 135:/usr/include/stdlib.h **** 			  char **__restrict __endptr)
+ 136:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 137:/usr/include/stdlib.h **** #endif
+ 138:/usr/include/stdlib.h **** 
+ 139:/usr/include/stdlib.h **** #if __HAVE_FLOAT32 && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 140:/usr/include/stdlib.h **** extern _Float32 strtof32 (const char *__restrict __nptr,
+ 141:/usr/include/stdlib.h **** 			  char **__restrict __endptr)
+ 142:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 143:/usr/include/stdlib.h **** #endif
+ 144:/usr/include/stdlib.h **** 
+ 145:/usr/include/stdlib.h **** #if __HAVE_FLOAT64 && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 146:/usr/include/stdlib.h **** extern _Float64 strtof64 (const char *__restrict __nptr,
+ 147:/usr/include/stdlib.h **** 			  char **__restrict __endptr)
+ 148:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 149:/usr/include/stdlib.h **** #endif
+ 150:/usr/include/stdlib.h **** 
+ 151:/usr/include/stdlib.h **** #if __HAVE_FLOAT128 && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 152:/usr/include/stdlib.h **** extern _Float128 strtof128 (const char *__restrict __nptr,
+ 153:/usr/include/stdlib.h **** 			    char **__restrict __endptr)
+ 154:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 155:/usr/include/stdlib.h **** #endif
+ 156:/usr/include/stdlib.h **** 
+ 157:/usr/include/stdlib.h **** #if __HAVE_FLOAT32X && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 158:/usr/include/stdlib.h **** extern _Float32x strtof32x (const char *__restrict __nptr,
+ 159:/usr/include/stdlib.h **** 			    char **__restrict __endptr)
+ 160:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 161:/usr/include/stdlib.h **** #endif
+ 162:/usr/include/stdlib.h **** 
+ 163:/usr/include/stdlib.h **** #if __HAVE_FLOAT64X && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 164:/usr/include/stdlib.h **** extern _Float64x strtof64x (const char *__restrict __nptr,
+ 165:/usr/include/stdlib.h **** 			    char **__restrict __endptr)
+ 166:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 167:/usr/include/stdlib.h **** #endif
+ 168:/usr/include/stdlib.h **** 
+ 169:/usr/include/stdlib.h **** #if __HAVE_FLOAT128X && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 170:/usr/include/stdlib.h **** extern _Float128x strtof128x (const char *__restrict __nptr,
+ 171:/usr/include/stdlib.h **** 			      char **__restrict __endptr)
+ 172:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 173:/usr/include/stdlib.h **** #endif
+ 174:/usr/include/stdlib.h **** 
+ 175:/usr/include/stdlib.h **** /* Convert a string to a long integer.  */
+ 176:/usr/include/stdlib.h **** extern long int strtol (const char *__restrict __nptr,
+ 177:/usr/include/stdlib.h **** 			char **__restrict __endptr, int __base)
+ 178:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 179:/usr/include/stdlib.h **** /* Convert a string to an unsigned long integer.  */
+ 180:/usr/include/stdlib.h **** extern unsigned long int strtoul (const char *__restrict __nptr,
+ 181:/usr/include/stdlib.h **** 				  char **__restrict __endptr, int __base)
+ 182:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 183:/usr/include/stdlib.h **** 
+ 184:/usr/include/stdlib.h **** #ifdef __USE_MISC
+ 185:/usr/include/stdlib.h **** /* Convert a string to a quadword integer.  */
+ 186:/usr/include/stdlib.h **** __extension__
+ 187:/usr/include/stdlib.h **** extern long long int strtoq (const char *__restrict __nptr,
+ 188:/usr/include/stdlib.h **** 			     char **__restrict __endptr, int __base)
+ 189:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 190:/usr/include/stdlib.h **** /* Convert a string to an unsigned quadword integer.  */
+ 191:/usr/include/stdlib.h **** __extension__
+ 192:/usr/include/stdlib.h **** extern unsigned long long int strtouq (const char *__restrict __nptr,
+ 193:/usr/include/stdlib.h **** 				       char **__restrict __endptr, int __base)
+ 194:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 195:/usr/include/stdlib.h **** #endif /* Use misc.  */
+ 196:/usr/include/stdlib.h **** 
+ 197:/usr/include/stdlib.h **** #ifdef __USE_ISOC99
+ 198:/usr/include/stdlib.h **** /* Convert a string to a quadword integer.  */
+ 199:/usr/include/stdlib.h **** __extension__
+ 200:/usr/include/stdlib.h **** extern long long int strtoll (const char *__restrict __nptr,
+ 201:/usr/include/stdlib.h **** 			      char **__restrict __endptr, int __base)
+ 202:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 203:/usr/include/stdlib.h **** /* Convert a string to an unsigned quadword integer.  */
+ 204:/usr/include/stdlib.h **** __extension__
+ 205:/usr/include/stdlib.h **** extern unsigned long long int strtoull (const char *__restrict __nptr,
+ 206:/usr/include/stdlib.h **** 					char **__restrict __endptr, int __base)
+ 207:/usr/include/stdlib.h ****      __THROW __nonnull ((1));
+ 208:/usr/include/stdlib.h **** #endif /* ISO C99 or use MISC.  */
+ 209:/usr/include/stdlib.h **** 
+ 210:/usr/include/stdlib.h **** /* Convert a floating-point number to a string.  */
+ 211:/usr/include/stdlib.h **** #if __GLIBC_USE (IEC_60559_BFP_EXT)
+ 212:/usr/include/stdlib.h **** extern int strfromd (char *__dest, size_t __size, const char *__format,
+ 213:/usr/include/stdlib.h **** 		     double __f)
+ 214:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 215:/usr/include/stdlib.h **** 
+ 216:/usr/include/stdlib.h **** extern int strfromf (char *__dest, size_t __size, const char *__format,
+ 217:/usr/include/stdlib.h **** 		     float __f)
+ 218:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 219:/usr/include/stdlib.h **** 
+ 220:/usr/include/stdlib.h **** extern int strfroml (char *__dest, size_t __size, const char *__format,
+ 221:/usr/include/stdlib.h **** 		     long double __f)
+ 222:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 223:/usr/include/stdlib.h **** #endif
+ 224:/usr/include/stdlib.h **** 
+ 225:/usr/include/stdlib.h **** #if __HAVE_FLOAT16 && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 226:/usr/include/stdlib.h **** extern int strfromf16 (char *__dest, size_t __size, const char * __format,
+ 227:/usr/include/stdlib.h **** 		       _Float16 __f)
+ 228:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 229:/usr/include/stdlib.h **** #endif
+ 230:/usr/include/stdlib.h **** 
+ 231:/usr/include/stdlib.h **** #if __HAVE_FLOAT32 && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 232:/usr/include/stdlib.h **** extern int strfromf32 (char *__dest, size_t __size, const char * __format,
+ 233:/usr/include/stdlib.h **** 		       _Float32 __f)
+ 234:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 235:/usr/include/stdlib.h **** #endif
+ 236:/usr/include/stdlib.h **** 
+ 237:/usr/include/stdlib.h **** #if __HAVE_FLOAT64 && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 238:/usr/include/stdlib.h **** extern int strfromf64 (char *__dest, size_t __size, const char * __format,
+ 239:/usr/include/stdlib.h **** 		       _Float64 __f)
+ 240:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 241:/usr/include/stdlib.h **** #endif
+ 242:/usr/include/stdlib.h **** 
+ 243:/usr/include/stdlib.h **** #if __HAVE_FLOAT128 && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 244:/usr/include/stdlib.h **** extern int strfromf128 (char *__dest, size_t __size, const char * __format,
+ 245:/usr/include/stdlib.h **** 			_Float128 __f)
+ 246:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 247:/usr/include/stdlib.h **** #endif
+ 248:/usr/include/stdlib.h **** 
+ 249:/usr/include/stdlib.h **** #if __HAVE_FLOAT32X && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 250:/usr/include/stdlib.h **** extern int strfromf32x (char *__dest, size_t __size, const char * __format,
+ 251:/usr/include/stdlib.h **** 			_Float32x __f)
+ 252:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 253:/usr/include/stdlib.h **** #endif
+ 254:/usr/include/stdlib.h **** 
+ 255:/usr/include/stdlib.h **** #if __HAVE_FLOAT64X && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 256:/usr/include/stdlib.h **** extern int strfromf64x (char *__dest, size_t __size, const char * __format,
+ 257:/usr/include/stdlib.h **** 			_Float64x __f)
+ 258:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 259:/usr/include/stdlib.h **** #endif
+ 260:/usr/include/stdlib.h **** 
+ 261:/usr/include/stdlib.h **** #if __HAVE_FLOAT128X && __GLIBC_USE (IEC_60559_TYPES_EXT)
+ 262:/usr/include/stdlib.h **** extern int strfromf128x (char *__dest, size_t __size, const char * __format,
+ 263:/usr/include/stdlib.h **** 			 _Float128x __f)
+ 264:/usr/include/stdlib.h ****      __THROW __nonnull ((3));
+ 265:/usr/include/stdlib.h **** #endif
+ 266:/usr/include/stdlib.h **** 
+ 267:/usr/include/stdlib.h **** 
+ 268:/usr/include/stdlib.h **** #ifdef __USE_GNU
+ 269:/usr/include/stdlib.h **** /* Parallel versions of the functions above which take the locale to
+ 270:/usr/include/stdlib.h ****    use as an additional parameter.  These are GNU extensions inspired
+ 271:/usr/include/stdlib.h ****    by the POSIX.1-2008 extended locale API.  */
+ 272:/usr/include/stdlib.h **** # include <bits/types/locale_t.h>
+ 273:/usr/include/stdlib.h **** 
+ 274:/usr/include/stdlib.h **** extern long int strtol_l (const char *__restrict __nptr,
+ 275:/usr/include/stdlib.h **** 			  char **__restrict __endptr, int __base,
+ 276:/usr/include/stdlib.h **** 			  locale_t __loc) __THROW __nonnull ((1, 4));
+ 277:/usr/include/stdlib.h **** 
+ 278:/usr/include/stdlib.h **** extern unsigned long int strtoul_l (const char *__restrict __nptr,
+ 279:/usr/include/stdlib.h **** 				    char **__restrict __endptr,
+ 280:/usr/include/stdlib.h **** 				    int __base, locale_t __loc)
+ 281:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 4));
+ 282:/usr/include/stdlib.h **** 
+ 283:/usr/include/stdlib.h **** __extension__
+ 284:/usr/include/stdlib.h **** extern long long int strtoll_l (const char *__restrict __nptr,
+ 285:/usr/include/stdlib.h **** 				char **__restrict __endptr, int __base,
+ 286:/usr/include/stdlib.h **** 				locale_t __loc)
+ 287:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 4));
+ 288:/usr/include/stdlib.h **** 
+ 289:/usr/include/stdlib.h **** __extension__
+ 290:/usr/include/stdlib.h **** extern unsigned long long int strtoull_l (const char *__restrict __nptr,
+ 291:/usr/include/stdlib.h **** 					  char **__restrict __endptr,
+ 292:/usr/include/stdlib.h **** 					  int __base, locale_t __loc)
+ 293:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 4));
+ 294:/usr/include/stdlib.h **** 
+ 295:/usr/include/stdlib.h **** extern double strtod_l (const char *__restrict __nptr,
+ 296:/usr/include/stdlib.h **** 			char **__restrict __endptr, locale_t __loc)
+ 297:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 298:/usr/include/stdlib.h **** 
+ 299:/usr/include/stdlib.h **** extern float strtof_l (const char *__restrict __nptr,
+ 300:/usr/include/stdlib.h **** 		       char **__restrict __endptr, locale_t __loc)
+ 301:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 302:/usr/include/stdlib.h **** 
+ 303:/usr/include/stdlib.h **** extern long double strtold_l (const char *__restrict __nptr,
+ 304:/usr/include/stdlib.h **** 			      char **__restrict __endptr,
+ 305:/usr/include/stdlib.h **** 			      locale_t __loc)
+ 306:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 307:/usr/include/stdlib.h **** 
+ 308:/usr/include/stdlib.h **** # if __HAVE_FLOAT16
+ 309:/usr/include/stdlib.h **** extern _Float16 strtof16_l (const char *__restrict __nptr,
+ 310:/usr/include/stdlib.h **** 			    char **__restrict __endptr,
+ 311:/usr/include/stdlib.h **** 			    locale_t __loc)
+ 312:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 313:/usr/include/stdlib.h **** # endif
+ 314:/usr/include/stdlib.h **** 
+ 315:/usr/include/stdlib.h **** # if __HAVE_FLOAT32
+ 316:/usr/include/stdlib.h **** extern _Float32 strtof32_l (const char *__restrict __nptr,
+ 317:/usr/include/stdlib.h **** 			    char **__restrict __endptr,
+ 318:/usr/include/stdlib.h **** 			    locale_t __loc)
+ 319:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 320:/usr/include/stdlib.h **** # endif
+ 321:/usr/include/stdlib.h **** 
+ 322:/usr/include/stdlib.h **** # if __HAVE_FLOAT64
+ 323:/usr/include/stdlib.h **** extern _Float64 strtof64_l (const char *__restrict __nptr,
+ 324:/usr/include/stdlib.h **** 			    char **__restrict __endptr,
+ 325:/usr/include/stdlib.h **** 			    locale_t __loc)
+ 326:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 327:/usr/include/stdlib.h **** # endif
+ 328:/usr/include/stdlib.h **** 
+ 329:/usr/include/stdlib.h **** # if __HAVE_FLOAT128
+ 330:/usr/include/stdlib.h **** extern _Float128 strtof128_l (const char *__restrict __nptr,
+ 331:/usr/include/stdlib.h **** 			      char **__restrict __endptr,
+ 332:/usr/include/stdlib.h **** 			      locale_t __loc)
+ 333:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 334:/usr/include/stdlib.h **** # endif
+ 335:/usr/include/stdlib.h **** 
+ 336:/usr/include/stdlib.h **** # if __HAVE_FLOAT32X
+ 337:/usr/include/stdlib.h **** extern _Float32x strtof32x_l (const char *__restrict __nptr,
+ 338:/usr/include/stdlib.h **** 			      char **__restrict __endptr,
+ 339:/usr/include/stdlib.h **** 			      locale_t __loc)
+ 340:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 341:/usr/include/stdlib.h **** # endif
+ 342:/usr/include/stdlib.h **** 
+ 343:/usr/include/stdlib.h **** # if __HAVE_FLOAT64X
+ 344:/usr/include/stdlib.h **** extern _Float64x strtof64x_l (const char *__restrict __nptr,
+ 345:/usr/include/stdlib.h **** 			      char **__restrict __endptr,
+ 346:/usr/include/stdlib.h **** 			      locale_t __loc)
+ 347:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 348:/usr/include/stdlib.h **** # endif
+ 349:/usr/include/stdlib.h **** 
+ 350:/usr/include/stdlib.h **** # if __HAVE_FLOAT128X
+ 351:/usr/include/stdlib.h **** extern _Float128x strtof128x_l (const char *__restrict __nptr,
+ 352:/usr/include/stdlib.h **** 				char **__restrict __endptr,
+ 353:/usr/include/stdlib.h **** 				locale_t __loc)
+ 354:/usr/include/stdlib.h ****      __THROW __nonnull ((1, 3));
+ 355:/usr/include/stdlib.h **** # endif
+ 356:/usr/include/stdlib.h **** #endif /* GNU */
+ 357:/usr/include/stdlib.h **** 
+ 358:/usr/include/stdlib.h **** 
+ 359:/usr/include/stdlib.h **** #ifdef __USE_EXTERN_INLINES
+ 360:/usr/include/stdlib.h **** __extern_inline int
+ 361:/usr/include/stdlib.h **** __NTH (atoi (const char *__nptr))
+ 362:/usr/include/stdlib.h **** {
+ 363:/usr/include/stdlib.h ****   return (int) strtol (__nptr, (char **) NULL, 10);
+ 231              		.loc 2 363 0
+ 232 0011 488B7E08 		movq	8(%rsi), %rdi	# MEM[(char * *)argv_8(D) + 8B], MEM[(char * *)argv_8(D) + 8B]
+ 233              	.LVL9:
+ 234 0015 4889F3   		movq	%rsi, %rbx	# argv, argv
+ 235              	.LVL10:
+ 236 0018 BA0A0000 		movl	$10, %edx	#,
+ 236      00
+ 237 001d 31F6     		xorl	%esi, %esi	#
+ 238              	.LVL11:
+ 239 001f E8000000 		call	strtol@PLT	#
+ 239      00
+ 240              	.LVL12:
+ 241              	.LBE92:
+ 242              	.LBE91:
+ 243              	.LBB94:
+ 244              	.LBB95:
+ 245 0024 488B7B10 		movq	16(%rbx), %rdi	# MEM[(char * *)argv_8(D) + 16B], MEM[(char * *)argv_8(D) + 16B]
+ 246              	.LBE95:
+ 247              	.LBE94:
+ 248              	.LBB98:
+ 249              	.LBB93:
+ 250 0028 4889C5   		movq	%rax, %rbp	#, D.11012
+ 251              	.LVL13:
+ 252              	.LBE93:
+ 253              	.LBE98:
+ 254              	.LBB99:
+ 255              	.LBB96:
+ 256 002b 31F6     		xorl	%esi, %esi	#
+ 257 002d BA0A0000 		movl	$10, %edx	#,
+ 257      00
+ 258 0032 E8000000 		call	strtol@PLT	#
+ 258      00
+ 259              	.LVL14:
+ 260              	.LBE96:
+ 261              	.LBE99:
+  45:unroll-prev-7.cpp ****         printf("Require 2 parameters, but it gets %d.\n", argc-1);
+  46:unroll-prev-7.cpp ****         exit(1);
+  47:unroll-prev-7.cpp ****     }
+  48:unroll-prev-7.cpp ****     
+  49:unroll-prev-7.cpp ****     int row = atoi(argv[1]);
+  50:unroll-prev-7.cpp ****     int col = atoi(argv[2]);
+  51:unroll-prev-7.cpp **** 
+  52:unroll-prev-7.cpp ****     if (row >= N || col >= M) {
+ 262              		.loc 1 52 0
+ 263 0037 81FD3308 		cmpl	$2099, %ebp	#, D.11012
+ 263      0000
+ 264              	.LBB100:
+ 265              	.LBB97:
+ 266              		.loc 2 363 0
+ 267 003d 4889C3   		movq	%rax, %rbx	#, D.11012
+ 268              	.LVL15:
+ 269              	.LBE97:
+ 270              	.LBE100:
+ 271              		.loc 1 52 0
+ 272 0040 0F8FCB01 		jg	.L21	#,
+ 272      0000
+ 273 0046 3D3F0600 		cmpl	$1599, %eax	#, D.11012
+ 273      00
+ 274 004b 0F8FC001 		jg	.L21	#,
+ 274      0000
+  53:unroll-prev-7.cpp ****         printf("Index is out of the matrix size\n");
+  54:unroll-prev-7.cpp ****         exit(2);
+  55:unroll-prev-7.cpp ****     }
+  56:unroll-prev-7.cpp **** 
+  57:unroll-prev-7.cpp ****     srand((unsigned)time(NULL));
+ 275              		.loc 1 57 0
+ 276 0051 31FF     		xorl	%edi, %edi	#
+ 277 0053 E8000000 		call	time@PLT	#
+ 277      00
+ 278              	.LVL16:
+ 279 0058 89C7     		movl	%eax, %edi	# D.11012,
+ 280 005a E8000000 		call	srand@PLT	#
+ 280      00
+ 281              	.LVL17:
+  58:unroll-prev-7.cpp ****     initialize();
+ 282              		.loc 1 58 0
+ 283 005f E8000000 		call	_Z10initializev	#
+ 283      00
+ 284              	.LVL18:
+  59:unroll-prev-7.cpp ****     auto start = chrono::high_resolution_clock::now();
+ 285              		.loc 1 59 0
+ 286 0064 E8000000 		call	_ZNSt6chrono3_V212system_clock3nowEv@PLT	#
+ 286      00
+ 287              	.LVL19:
+ 288 0069 4C8D0D00 		leaq	6400+C(%rip), %r9	#, ivtmp.123
+ 288      000000
+ 289 0070 4C8D0500 		leaq	28+A(%rip), %r8	#, ivtmp.126
+ 289      000000
+ 290 0077 4C8D1500 		leaq	13446400+C(%rip), %r10	#, D.11017
+ 290      000000
+ 291 007e 4989C4   		movq	%rax, %r12	#, start
+ 292              	.LVL20:
+ 293              	.L20:
+ 294 0081 498DB900 		leaq	-6400(%r9), %rdi	#, ivtmp.98
+ 294      E7FFFF
+ 295 0088 488D3500 		leaq	44800+B(%rip), %rsi	#, ivtmp.107
+ 295      000000
+ 296 008f F3450F10 		movss	-28(%r8), %xmm8	# MEM[base: _161, offset: -28B], D.11014
+ 296      40E4
+ 297 0095 F3410F10 		movss	-24(%r8), %xmm7	# MEM[base: _161, offset: -24B], D.11014
+ 297      78E8
+ 298 009b F3410F10 		movss	-20(%r8), %xmm6	# MEM[base: _161, offset: -20B], D.11014
+ 298      70EC
+ 299 00a1 F3410F10 		movss	-16(%r8), %xmm5	# MEM[base: _161, offset: -16B], D.11014
+ 299      68F0
+ 300 00a7 F3410F10 		movss	-12(%r8), %xmm4	# MEM[base: _161, offset: -12B], D.11014
+ 300      60F4
+ 301 00ad F3410F10 		movss	-8(%r8), %xmm3	# MEM[base: _161, offset: -8B], D.11014
+ 301      58F8
+ 302 00b3 F3410F10 		movss	-4(%r8), %xmm2	# MEM[base: _161, offset: -4B], D.11014
+ 302      50FC
+ 303              	.LVL21:
+ 304 00b9 0F1F8000 		.p2align 4,,10
+ 304      000000
+ 305              		.p2align 3
+ 306              	.L19:
+  60:unroll-prev-7.cpp ****  
+  61:unroll-prev-7.cpp ****  
+  62:unroll-prev-7.cpp ****     int i,j,k;
+  63:unroll-prev-7.cpp ****     for (i = 0; i < N; i++){
+  64:unroll-prev-7.cpp ****         for (j = 0; j < M; j++){
+  65:unroll-prev-7.cpp ****             C[i][j] = C[i][j] + A[i][0] * B[0][j];
+  66:unroll-prev-7.cpp ****             C[i][j] = C[i][j] + A[i][1] * B[1][j];
+  67:unroll-prev-7.cpp ****             C[i][j] = C[i][j] + A[i][2] * B[2][j];
+  68:unroll-prev-7.cpp ****             C[i][j] = C[i][j] + A[i][3] * B[3][j];
+  69:unroll-prev-7.cpp ****             C[i][j] = C[i][j] + A[i][4] * B[4][j];
+  70:unroll-prev-7.cpp ****             C[i][j] = C[i][j] + A[i][5] * B[5][j];
+  71:unroll-prev-7.cpp ****             C[i][j] = C[i][j] + A[i][6] * B[6][j];
+ 307              		.loc 1 71 0
+ 308 00c0 F30F108E 		movss	-44800(%rsi), %xmm1	# MEM[base: _150, offset: -44800B], D.11014
+ 308      0051FFFF 
+ 309 00c8 488D8E00 		leaq	12755200(%rsi), %rcx	#, D.11017
+ 309      A1C200
+ 310 00cf 4889F0   		movq	%rsi, %rax	# ivtmp.107, ivtmp.89
+ 311 00d2 F3410F59 		mulss	%xmm8, %xmm1	# D.11014, D.11014
+ 311      C8
+ 312 00d7 F30F1086 		movss	-38400(%rsi), %xmm0	# MEM[base: _150, offset: -38400B], D.11014
+ 312      006AFFFF 
+ 313 00df F30F59C7 		mulss	%xmm7, %xmm0	# D.11014, D.11014
+ 314 00e3 4C89C2   		movq	%r8, %rdx	# ivtmp.126, ivtmp.86
+ 315 00e6 F30F580F 		addss	(%rdi), %xmm1	# MEM[base: _151, offset: 0B], D.11014
+ 316 00ea F30F58C8 		addss	%xmm0, %xmm1	# D.11014, D.11014
+ 317 00ee F30F1086 		movss	-32000(%rsi), %xmm0	# MEM[base: _150, offset: -32000B], D.11014
+ 317      0083FFFF 
+ 318 00f6 F30F59C6 		mulss	%xmm6, %xmm0	# D.11014, D.11014
+ 319 00fa F30F58C8 		addss	%xmm0, %xmm1	# D.11014, D.11014
+ 320 00fe F30F1086 		movss	-25600(%rsi), %xmm0	# MEM[base: _150, offset: -25600B], D.11014
+ 320      009CFFFF 
+ 321 0106 F30F59C5 		mulss	%xmm5, %xmm0	# D.11014, D.11014
+ 322 010a F30F58C8 		addss	%xmm0, %xmm1	# D.11014, D.11014
+ 323 010e F30F1086 		movss	-19200(%rsi), %xmm0	# MEM[base: _150, offset: -19200B], D.11014
+ 323      00B5FFFF 
+ 324 0116 F30F59C4 		mulss	%xmm4, %xmm0	# D.11014, D.11014
+ 325 011a F30F58C8 		addss	%xmm0, %xmm1	# D.11014, D.11014
+ 326 011e F30F1086 		movss	-12800(%rsi), %xmm0	# MEM[base: _150, offset: -12800B], D.11014
+ 326      00CEFFFF 
+ 327 0126 F30F59C3 		mulss	%xmm3, %xmm0	# D.11014, D.11014
+ 328 012a F30F58C8 		addss	%xmm0, %xmm1	# D.11014, D.11014
+ 329 012e F30F1086 		movss	-6400(%rsi), %xmm0	# MEM[base: _150, offset: -6400B], D.11014
+ 329      00E7FFFF 
+ 330 0136 F30F59C2 		mulss	%xmm2, %xmm0	# D.11014, D.11014
+ 331 013a F30F58C8 		addss	%xmm0, %xmm1	# D.11014, D.11014
+ 332              	.LVL22:
+ 333 013e 6690     		.p2align 4,,10
+ 334              		.p2align 3
+ 335              	.L18:
+  72:unroll-prev-7.cpp ****             for (k = 7; k< P; k++){
+  73:unroll-prev-7.cpp ****                 C[i][j] = C[i][j] + A[i][k] * B[k][j];
+ 336              		.loc 1 73 0 discriminator 2
+ 337 0140 F30F1002 		movss	(%rdx), %xmm0	# MEM[base: _164, offset: 0B], MEM[base: _164, offset: 0B]
+ 338 0144 48050019 		addq	$6400, %rax	#, ivtmp.89
+ 338      0000
+ 339 014a 4883C204 		addq	$4, %rdx	#, ivtmp.86
+ 340 014e F30F5980 		mulss	-6400(%rax), %xmm0	# MEM[base: _163, offset: 0B], D.11014
+ 340      00E7FFFF 
+  72:unroll-prev-7.cpp ****             for (k = 7; k< P; k++){
+ 341              		.loc 1 72 0 discriminator 2
+ 342 0156 4839C1   		cmpq	%rax, %rcx	# ivtmp.89, D.11017
+ 343              		.loc 1 73 0 discriminator 2
+ 344 0159 F30F58C8 		addss	%xmm0, %xmm1	# D.11014, D.11014
+  72:unroll-prev-7.cpp ****             for (k = 7; k< P; k++){
+ 345              		.loc 1 72 0 discriminator 2
+ 346 015d 75E1     		jne	.L18	#,
+ 347 015f F30F110F 		movss	%xmm1, (%rdi)	# D.11014, MEM[base: _151, offset: 0B]
+ 348 0163 4883C704 		addq	$4, %rdi	#, ivtmp.98
+ 349 0167 4883C604 		addq	$4, %rsi	#, ivtmp.107
+  64:unroll-prev-7.cpp ****             C[i][j] = C[i][j] + A[i][0] * B[0][j];
+ 350              		.loc 1 64 0 discriminator 2
+ 351 016b 4939F9   		cmpq	%rdi, %r9	# ivtmp.98, ivtmp.123
+ 352 016e 0F854CFF 		jne	.L19	#,
+ 352      FFFF
+ 353 0174 4981C100 		addq	$6400, %r9	#, ivtmp.123
+ 353      190000
+ 354 017b 4981C040 		addq	$8000, %r8	#, ivtmp.126
+ 354      1F0000
+  63:unroll-prev-7.cpp ****         for (j = 0; j < M; j++){
+ 355              		.loc 1 63 0 discriminator 2
+ 356 0182 4D39CA   		cmpq	%r9, %r10	# ivtmp.123, D.11017
+ 357 0185 0F85F6FE 		jne	.L20	#,
+ 357      FFFF
+  74:unroll-prev-7.cpp ****             }
+  75:unroll-prev-7.cpp ****         }       
+  76:unroll-prev-7.cpp ****     }
+  77:unroll-prev-7.cpp **** 
+  78:unroll-prev-7.cpp ****     auto end = chrono::high_resolution_clock::now();
+ 358              		.loc 1 78 0
+ 359 018b E8000000 		call	_ZNSt6chrono3_V212system_clock3nowEv@PLT	#
+ 359      00
+ 360              	.LVL23:
+ 361              	.LBB101:
+ 362              	.LBB102:
+ 363              	.LBB103:
+ 364              	.LBB104:
+ 365              	.LBB105:
+ 366              		.file 3 "/usr/include/c++/5/chrono"
+   1:/usr/include/c++/5/chrono **** // <chrono> -*- C++ -*-
+   2:/usr/include/c++/5/chrono **** 
+   3:/usr/include/c++/5/chrono **** // Copyright (C) 2008-2015 Free Software Foundation, Inc.
+   4:/usr/include/c++/5/chrono **** //
+   5:/usr/include/c++/5/chrono **** // This file is part of the GNU ISO C++ Library.  This library is free
+   6:/usr/include/c++/5/chrono **** // software; you can redistribute it and/or modify it under the
+   7:/usr/include/c++/5/chrono **** // terms of the GNU General Public License as published by the
+   8:/usr/include/c++/5/chrono **** // Free Software Foundation; either version 3, or (at your option)
+   9:/usr/include/c++/5/chrono **** // any later version.
+  10:/usr/include/c++/5/chrono **** 
+  11:/usr/include/c++/5/chrono **** // This library is distributed in the hope that it will be useful,
+  12:/usr/include/c++/5/chrono **** // but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:/usr/include/c++/5/chrono **** // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:/usr/include/c++/5/chrono **** // GNU General Public License for more details.
+  15:/usr/include/c++/5/chrono **** 
+  16:/usr/include/c++/5/chrono **** // Under Section 7 of GPL version 3, you are granted additional
+  17:/usr/include/c++/5/chrono **** // permissions described in the GCC Runtime Library Exception, version
+  18:/usr/include/c++/5/chrono **** // 3.1, as published by the Free Software Foundation.
+  19:/usr/include/c++/5/chrono **** 
+  20:/usr/include/c++/5/chrono **** // You should have received a copy of the GNU General Public License and
+  21:/usr/include/c++/5/chrono **** // a copy of the GCC Runtime Library Exception along with this program;
+  22:/usr/include/c++/5/chrono **** // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+  23:/usr/include/c++/5/chrono **** // <http://www.gnu.org/licenses/>.
+  24:/usr/include/c++/5/chrono **** 
+  25:/usr/include/c++/5/chrono **** /** @file include/chrono
+  26:/usr/include/c++/5/chrono ****  *  This is a Standard C++ Library header.
+  27:/usr/include/c++/5/chrono ****  */
+  28:/usr/include/c++/5/chrono **** 
+  29:/usr/include/c++/5/chrono **** #ifndef _GLIBCXX_CHRONO
+  30:/usr/include/c++/5/chrono **** #define _GLIBCXX_CHRONO 1
+  31:/usr/include/c++/5/chrono **** 
+  32:/usr/include/c++/5/chrono **** #pragma GCC system_header
+  33:/usr/include/c++/5/chrono **** 
+  34:/usr/include/c++/5/chrono **** #if __cplusplus < 201103L
+  35:/usr/include/c++/5/chrono **** # include <bits/c++0x_warning.h>
+  36:/usr/include/c++/5/chrono **** #else
+  37:/usr/include/c++/5/chrono **** 
+  38:/usr/include/c++/5/chrono **** #include <ratio>
+  39:/usr/include/c++/5/chrono **** #include <type_traits>
+  40:/usr/include/c++/5/chrono **** #include <limits>
+  41:/usr/include/c++/5/chrono **** #include <ctime>
+  42:/usr/include/c++/5/chrono **** #include <bits/parse_numbers.h> // for literals support.
+  43:/usr/include/c++/5/chrono **** 
+  44:/usr/include/c++/5/chrono **** #ifdef _GLIBCXX_USE_C99_STDINT_TR1
+  45:/usr/include/c++/5/chrono **** 
+  46:/usr/include/c++/5/chrono **** namespace std _GLIBCXX_VISIBILITY(default)
+  47:/usr/include/c++/5/chrono **** {
+  48:/usr/include/c++/5/chrono ****   /**
+  49:/usr/include/c++/5/chrono ****    * @defgroup chrono Time
+  50:/usr/include/c++/5/chrono ****    * @ingroup utilities
+  51:/usr/include/c++/5/chrono ****    *
+  52:/usr/include/c++/5/chrono ****    * Classes and functions for time.
+  53:/usr/include/c++/5/chrono ****    * @{
+  54:/usr/include/c++/5/chrono ****    */
+  55:/usr/include/c++/5/chrono **** 
+  56:/usr/include/c++/5/chrono ****   /** @namespace std::chrono
+  57:/usr/include/c++/5/chrono ****    *  @brief ISO C++ 2011 entities sub-namespace for time and date.
+  58:/usr/include/c++/5/chrono ****    */
+  59:/usr/include/c++/5/chrono ****   namespace chrono
+  60:/usr/include/c++/5/chrono ****   {
+  61:/usr/include/c++/5/chrono ****   _GLIBCXX_BEGIN_NAMESPACE_VERSION
+  62:/usr/include/c++/5/chrono **** 
+  63:/usr/include/c++/5/chrono ****     template<typename _Rep, typename _Period = ratio<1>>
+  64:/usr/include/c++/5/chrono ****       struct duration;
+  65:/usr/include/c++/5/chrono **** 
+  66:/usr/include/c++/5/chrono ****     template<typename _Clock, typename _Dur = typename _Clock::duration>
+  67:/usr/include/c++/5/chrono ****       struct time_point;
+  68:/usr/include/c++/5/chrono **** 
+  69:/usr/include/c++/5/chrono ****   _GLIBCXX_END_NAMESPACE_VERSION
+  70:/usr/include/c++/5/chrono ****   }
+  71:/usr/include/c++/5/chrono **** 
+  72:/usr/include/c++/5/chrono **** _GLIBCXX_BEGIN_NAMESPACE_VERSION
+  73:/usr/include/c++/5/chrono **** 
+  74:/usr/include/c++/5/chrono ****   // 20.11.4.3 specialization of common_type (for duration, sfinae-friendly)
+  75:/usr/include/c++/5/chrono ****   
+  76:/usr/include/c++/5/chrono ****   template<typename _CT, typename _Period1, typename _Period2>
+  77:/usr/include/c++/5/chrono ****     struct __duration_common_type_wrapper
+  78:/usr/include/c++/5/chrono ****     {
+  79:/usr/include/c++/5/chrono ****     private:
+  80:/usr/include/c++/5/chrono ****       typedef __static_gcd<_Period1::num, _Period2::num> __gcd_num;
+  81:/usr/include/c++/5/chrono ****       typedef __static_gcd<_Period1::den, _Period2::den> __gcd_den;
+  82:/usr/include/c++/5/chrono ****       typedef typename _CT::type __cr;
+  83:/usr/include/c++/5/chrono ****       typedef ratio<__gcd_num::value,
+  84:/usr/include/c++/5/chrono ****         (_Period1::den / __gcd_den::value) * _Period2::den> __r;
+  85:/usr/include/c++/5/chrono ****     public:
+  86:/usr/include/c++/5/chrono ****       typedef __success_type<chrono::duration<__cr, __r>> type;
+  87:/usr/include/c++/5/chrono ****     };
+  88:/usr/include/c++/5/chrono **** 
+  89:/usr/include/c++/5/chrono ****   template<typename _Period1, typename _Period2>
+  90:/usr/include/c++/5/chrono ****     struct __duration_common_type_wrapper<__failure_type, _Period1, _Period2>
+  91:/usr/include/c++/5/chrono ****     { typedef __failure_type type; };
+  92:/usr/include/c++/5/chrono **** 
+  93:/usr/include/c++/5/chrono ****   template<typename _Rep1, typename _Period1, typename _Rep2, typename _Period2>
+  94:/usr/include/c++/5/chrono ****     struct common_type<chrono::duration<_Rep1, _Period1>,
+  95:/usr/include/c++/5/chrono ****              chrono::duration<_Rep2, _Period2>>
+  96:/usr/include/c++/5/chrono ****     : public __duration_common_type_wrapper<typename __member_type_wrapper<
+  97:/usr/include/c++/5/chrono ****              common_type<_Rep1, _Rep2>>::type, _Period1, _Period2>::type
+  98:/usr/include/c++/5/chrono ****     { };
+  99:/usr/include/c++/5/chrono **** 
+ 100:/usr/include/c++/5/chrono ****   // 20.11.4.3 specialization of common_type (for time_point, sfinae-friendly)
+ 101:/usr/include/c++/5/chrono ****   
+ 102:/usr/include/c++/5/chrono ****   template<typename _CT, typename _Clock>
+ 103:/usr/include/c++/5/chrono ****     struct __timepoint_common_type_wrapper
+ 104:/usr/include/c++/5/chrono ****     {
+ 105:/usr/include/c++/5/chrono ****       typedef __success_type<chrono::time_point<_Clock, typename _CT::type>>
+ 106:/usr/include/c++/5/chrono ****         type;
+ 107:/usr/include/c++/5/chrono ****     };
+ 108:/usr/include/c++/5/chrono **** 
+ 109:/usr/include/c++/5/chrono ****   template<typename _Clock>
+ 110:/usr/include/c++/5/chrono ****     struct __timepoint_common_type_wrapper<__failure_type, _Clock>
+ 111:/usr/include/c++/5/chrono ****     { typedef __failure_type type; };
+ 112:/usr/include/c++/5/chrono **** 
+ 113:/usr/include/c++/5/chrono ****   template<typename _Clock, typename _Duration1, typename _Duration2>
+ 114:/usr/include/c++/5/chrono ****     struct common_type<chrono::time_point<_Clock, _Duration1>,
+ 115:/usr/include/c++/5/chrono ****              chrono::time_point<_Clock, _Duration2>>
+ 116:/usr/include/c++/5/chrono ****     : public __timepoint_common_type_wrapper<typename __member_type_wrapper<
+ 117:/usr/include/c++/5/chrono ****              common_type<_Duration1, _Duration2>>::type, _Clock>::type
+ 118:/usr/include/c++/5/chrono ****     { };
+ 119:/usr/include/c++/5/chrono **** 
+ 120:/usr/include/c++/5/chrono **** _GLIBCXX_END_NAMESPACE_VERSION
+ 121:/usr/include/c++/5/chrono **** 
+ 122:/usr/include/c++/5/chrono ****   namespace chrono
+ 123:/usr/include/c++/5/chrono ****   {
+ 124:/usr/include/c++/5/chrono ****   _GLIBCXX_BEGIN_NAMESPACE_VERSION
+ 125:/usr/include/c++/5/chrono **** 
+ 126:/usr/include/c++/5/chrono ****     // Primary template for duration_cast impl.
+ 127:/usr/include/c++/5/chrono ****     template<typename _ToDur, typename _CF, typename _CR,
+ 128:/usr/include/c++/5/chrono **** 	     bool _NumIsOne = false, bool _DenIsOne = false>
+ 129:/usr/include/c++/5/chrono ****       struct __duration_cast_impl
+ 130:/usr/include/c++/5/chrono ****       {
+ 131:/usr/include/c++/5/chrono **** 	template<typename _Rep, typename _Period>
+ 132:/usr/include/c++/5/chrono **** 	  static constexpr _ToDur
+ 133:/usr/include/c++/5/chrono **** 	  __cast(const duration<_Rep, _Period>& __d)
+ 134:/usr/include/c++/5/chrono **** 	  {
+ 135:/usr/include/c++/5/chrono **** 	    typedef typename _ToDur::rep			__to_rep;
+ 136:/usr/include/c++/5/chrono **** 	    return _ToDur(static_cast<__to_rep>(static_cast<_CR>(__d.count())
+ 137:/usr/include/c++/5/chrono **** 	      * static_cast<_CR>(_CF::num)
+ 138:/usr/include/c++/5/chrono **** 	      / static_cast<_CR>(_CF::den)));
+ 139:/usr/include/c++/5/chrono **** 	  }
+ 140:/usr/include/c++/5/chrono ****       };
+ 141:/usr/include/c++/5/chrono **** 
+ 142:/usr/include/c++/5/chrono ****     template<typename _ToDur, typename _CF, typename _CR>
+ 143:/usr/include/c++/5/chrono ****       struct __duration_cast_impl<_ToDur, _CF, _CR, true, true>
+ 144:/usr/include/c++/5/chrono ****       {
+ 145:/usr/include/c++/5/chrono **** 	template<typename _Rep, typename _Period>
+ 146:/usr/include/c++/5/chrono **** 	  static constexpr _ToDur
+ 147:/usr/include/c++/5/chrono **** 	  __cast(const duration<_Rep, _Period>& __d)
+ 148:/usr/include/c++/5/chrono **** 	  {
+ 149:/usr/include/c++/5/chrono **** 	    typedef typename _ToDur::rep			__to_rep;
+ 150:/usr/include/c++/5/chrono **** 	    return _ToDur(static_cast<__to_rep>(__d.count()));
+ 367              		.loc 3 150 0
+ 368 0190 660FEFD2 		pxor	%xmm2, %xmm2	# D.11014
+ 369              	.LVL24:
+ 370 0194 4C29E0   		subq	%r12, %rax	# start, D.11012
+ 371              	.LVL25:
+ 372              	.LBE105:
+ 373              	.LBE104:
+ 374              	.LBE103:
+ 375              	.LBE102:
+ 376              	.LBE101:
+  79:unroll-prev-7.cpp ****     float temps_execution = chrono::duration<float, nano>(end-start).count();
+  80:unroll-prev-7.cpp ****     
+  81:unroll-prev-7.cpp ****     printf("%2f\n", C[row][col]);
+ 377              		.loc 1 81 0
+ 378 0197 4863ED   		movslq	%ebp, %rbp	# D.11012, D.11016
+ 379              	.LBB114:
+ 380              	.LBB115:
+ 381              		.file 4 "/usr/include/x86_64-linux-gnu/bits/stdio2.h"
+   1:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** /* Checking macros for stdio functions.
+   2:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    Copyright (C) 2004-2018 Free Software Foundation, Inc.
+   3:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    This file is part of the GNU C Library.
+   4:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+   5:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    The GNU C Library is free software; you can redistribute it and/or
+   6:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    modify it under the terms of the GNU Lesser General Public
+   7:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    License as published by the Free Software Foundation; either
+   8:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    version 2.1 of the License, or (at your option) any later version.
+   9:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  10:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    The GNU C Library is distributed in the hope that it will be useful,
+  11:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    but WITHOUT ANY WARRANTY; without even the implied warranty of
+  12:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  13:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    Lesser General Public License for more details.
+  14:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  15:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    You should have received a copy of the GNU Lesser General Public
+  16:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    License along with the GNU C Library; if not, see
+  17:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****    <http://www.gnu.org/licenses/>.  */
+  18:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  19:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** #ifndef _STDIO_H
+  20:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** # error "Never include <bits/stdio2.h> directly; use <stdio.h> instead."
+  21:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** #endif
+  22:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  23:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** extern int __sprintf_chk (char *__restrict __s, int __flag, size_t __slen,
+  24:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			  const char *__restrict __format, ...) __THROW;
+  25:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** extern int __vsprintf_chk (char *__restrict __s, int __flag, size_t __slen,
+  26:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			   const char *__restrict __format,
+  27:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			   _G_va_list __ap) __THROW;
+  28:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  29:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** #ifdef __va_arg_pack
+  30:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __fortify_function int
+  31:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __NTH (sprintf (char *__restrict __s, const char *__restrict __fmt, ...))
+  32:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** {
+  33:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
+  34:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 				  __bos (__s), __fmt, __va_arg_pack ());
+  35:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** }
+  36:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** #elif !defined __cplusplus
+  37:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** # define sprintf(str, ...) \
+  38:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****   __builtin___sprintf_chk (str, __USE_FORTIFY_LEVEL - 1, __bos (str), \
+  39:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			   __VA_ARGS__)
+  40:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** #endif
+  41:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  42:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __fortify_function int
+  43:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __NTH (vsprintf (char *__restrict __s, const char *__restrict __fmt,
+  44:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 		 _G_va_list __ap))
+  45:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** {
+  46:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****   return __builtin___vsprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
+  47:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 				   __bos (__s), __fmt, __ap);
+  48:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** }
+  49:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  50:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** #if defined __USE_ISOC99 || defined __USE_UNIX98
+  51:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  52:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** extern int __snprintf_chk (char *__restrict __s, size_t __n, int __flag,
+  53:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			   size_t __slen, const char *__restrict __format,
+  54:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			   ...) __THROW;
+  55:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** extern int __vsnprintf_chk (char *__restrict __s, size_t __n, int __flag,
+  56:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			    size_t __slen, const char *__restrict __format,
+  57:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			    _G_va_list __ap) __THROW;
+  58:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  59:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** # ifdef __va_arg_pack
+  60:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __fortify_function int
+  61:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __NTH (snprintf (char *__restrict __s, size_t __n,
+  62:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 		 const char *__restrict __fmt, ...))
+  63:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** {
+  64:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+  65:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 				   __bos (__s), __fmt, __va_arg_pack ());
+  66:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** }
+  67:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** # elif !defined __cplusplus
+  68:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** #  define snprintf(str, len, ...) \
+  69:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****   __builtin___snprintf_chk (str, len, __USE_FORTIFY_LEVEL - 1, __bos (str), \
+  70:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			    __VA_ARGS__)
+  71:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** # endif
+  72:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  73:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __fortify_function int
+  74:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __NTH (vsnprintf (char *__restrict __s, size_t __n,
+  75:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 		  const char *__restrict __fmt, _G_va_list __ap))
+  76:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** {
+  77:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****   return __builtin___vsnprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+  78:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 				    __bos (__s), __fmt, __ap);
+  79:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** }
+  80:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  81:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** #endif
+  82:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  83:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** #if __USE_FORTIFY_LEVEL > 1
+  84:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  85:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** extern int __fprintf_chk (FILE *__restrict __stream, int __flag,
+  86:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			  const char *__restrict __format, ...);
+  87:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** extern int __printf_chk (int __flag, const char *__restrict __format, ...);
+  88:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** extern int __vfprintf_chk (FILE *__restrict __stream, int __flag,
+  89:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			   const char *__restrict __format, _G_va_list __ap);
+  90:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** extern int __vprintf_chk (int __flag, const char *__restrict __format,
+  91:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			  _G_va_list __ap);
+  92:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+  93:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** # ifdef __va_arg_pack
+  94:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __fortify_function int
+  95:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** fprintf (FILE *__restrict __stream, const char *__restrict __fmt, ...)
+  96:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** {
+  97:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****   return __fprintf_chk (__stream, __USE_FORTIFY_LEVEL - 1, __fmt,
+  98:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 			__va_arg_pack ());
+  99:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** }
+ 100:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** 
+ 101:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** __fortify_function int
+ 102:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** printf (const char *__restrict __fmt, ...)
+ 103:/usr/include/x86_64-linux-gnu/bits/stdio2.h **** {
+ 104:/usr/include/x86_64-linux-gnu/bits/stdio2.h ****   return __printf_chk (__USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ());
+ 382              		.loc 4 104 0
+ 383 019a 660FEFC0 		pxor	%xmm0, %xmm0	# D.11015
+ 384 019e 488D1500 		leaq	C(%rip), %rdx	#, tmp186
+ 384      000000
+ 385              	.LBE115:
+ 386              	.LBE114:
+ 387              		.loc 1 81 0
+ 388 01a5 4863DB   		movslq	%ebx, %rbx	# D.11012, D.11016
+ 389              	.LBB120:
+ 390              	.LBB116:
+ 391              		.loc 4 104 0
+ 392 01a8 488D3500 		leaq	.LC5(%rip), %rsi	#,
+ 392      000000
+ 393              	.LBE116:
+ 394              	.LBE120:
+ 395              	.LBB121:
+ 396              	.LBB112:
+ 397              	.LBB110:
+ 398              	.LBB108:
+ 399              	.LBB106:
+ 400              		.loc 3 150 0
+ 401 01af F3480F2A 		cvtsi2ssq	%rax, %xmm2	# D.11012, D.11014
+ 401      D0
+ 402              	.LBE106:
+ 403              	.LBE108:
+ 404              	.LBE110:
+ 405              	.LBE112:
+ 406              	.LBE121:
+ 407              		.loc 1 81 0
+ 408 01b4 488D44AD 		leaq	0(%rbp,%rbp,4), %rax	#, tmp191
+ 408      00
+ 409              	.LBB122:
+ 410              	.LBB117:
+ 411              		.loc 4 104 0
+ 412 01b9 BF010000 		movl	$1, %edi	#,
+ 412      00
+ 413              	.LBE117:
+ 414              	.LBE122:
+ 415              		.loc 1 81 0
+ 416 01be 488D0480 		leaq	(%rax,%rax,4), %rax	#, tmp193
+ 417 01c2 48C1E006 		salq	$6, %rax	#, tmp194
+ 418 01c6 4801D8   		addq	%rbx, %rax	# D.11016, tmp195
+ 419              	.LBB123:
+ 420              	.LBB118:
+ 421              		.loc 4 104 0
+ 422 01c9 F30F5A04 		cvtss2sd	(%rdx,%rax,4), %xmm0	# C, D.11015
+ 422      82
+ 423 01ce B8010000 		movl	$1, %eax	#,
+ 423      00
+ 424              	.LBE118:
+ 425              	.LBE123:
+ 426              	.LBB124:
+ 427              	.LBB113:
+ 428              	.LBB111:
+ 429              	.LBB109:
+ 430              	.LBB107:
+ 431              		.loc 3 150 0
+ 432 01d3 F30F1154 		movss	%xmm2, 12(%rsp)	# D.11014, %sfp
+ 432      240C
+ 433              	.LBE107:
+ 434              	.LBE109:
+ 435              	.LBE111:
+ 436              	.LBE113:
+ 437              	.LBE124:
+ 438              	.LBB125:
+ 439              	.LBB119:
+ 440              		.loc 4 104 0
+ 441 01d9 E8000000 		call	__printf_chk@PLT	#
+ 441      00
+ 442              	.LVL26:
+ 443              	.LBE119:
+ 444              	.LBE125:
+ 445              	.LBB126:
+ 446              	.LBB127:
+ 447 01de 660FEFC0 		pxor	%xmm0, %xmm0	# D.11015
+ 448 01e2 488D3500 		leaq	.LC7(%rip), %rsi	#,
+ 448      000000
+ 449 01e9 BF010000 		movl	$1, %edi	#,
+ 449      00
+ 450 01ee B8010000 		movl	$1, %eax	#,
+ 450      00
+ 451 01f3 F30F5A44 		cvtss2sd	12(%rsp), %xmm0	# %sfp, D.11015
+ 451      240C
+ 452 01f9 F20F5E05 		divsd	.LC6(%rip), %xmm0	#, D.11015
+ 452      00000000 
+ 453 0201 E8000000 		call	__printf_chk@PLT	#
+ 453      00
+ 454              	.LVL27:
+ 455              	.LBE127:
+ 456              	.LBE126:
+  82:unroll-prev-7.cpp **** 
+  83:unroll-prev-7.cpp ****     printf("Timer: \n%2f\n", temps_execution/1000.0);
+  84:unroll-prev-7.cpp ****     
+  85:unroll-prev-7.cpp ****     return 0;
+  86:unroll-prev-7.cpp **** }
+ 457              		.loc 1 86 0
+ 458 0206 4883C410 		addq	$16, %rsp	#,
+ 459              		.cfi_remember_state
+ 460              		.cfi_def_cfa_offset 32
+ 461 020a 31C0     		xorl	%eax, %eax	#
+ 462 020c 5B       		popq	%rbx	#
+ 463              		.cfi_def_cfa_offset 24
+ 464 020d 5D       		popq	%rbp	#
+ 465              		.cfi_def_cfa_offset 16
+ 466 020e 415C     		popq	%r12	#
+ 467              		.cfi_def_cfa_offset 8
+ 468              	.LVL28:
+ 469 0210 C3       		ret
+ 470              	.L21:
+ 471              		.cfi_restore_state
+ 472              	.LVL29:
+ 473              	.LBB128:
+ 474              	.LBB129:
+ 475              		.loc 4 104 0
+ 476 0211 488D3500 		leaq	.LC4(%rip), %rsi	#,
+ 476      000000
+ 477 0218 BF010000 		movl	$1, %edi	#,
+ 477      00
+ 478 021d 31C0     		xorl	%eax, %eax	#
+ 479 021f E8000000 		call	__printf_chk@PLT	#
+ 479      00
+ 480              	.LVL30:
+ 481              	.LBE129:
+ 482              	.LBE128:
+  54:unroll-prev-7.cpp ****     }
+ 483              		.loc 1 54 0
+ 484 0224 BF020000 		movl	$2, %edi	#,
+ 484      00
+ 485 0229 E8000000 		call	exit@PLT	#
+ 485      00
+ 486              	.LVL31:
+ 487              	.L26:
+ 488              	.LBB130:
+ 489              	.LBB131:
+ 490              		.loc 4 104 0
+ 491 022e 8D57FF   		leal	-1(%rdi), %edx	#, D.11016
+ 492 0231 488D3500 		leaq	.LC3(%rip), %rsi	#,
+ 492      000000
+ 493              	.LVL32:
+ 494 0238 BF010000 		movl	$1, %edi	#,
+ 494      00
+ 495              	.LVL33:
+ 496 023d 31C0     		xorl	%eax, %eax	#
+ 497 023f E8000000 		call	__printf_chk@PLT	#
+ 497      00
+ 498              	.LVL34:
+ 499              	.LBE131:
+ 500              	.LBE130:
+  46:unroll-prev-7.cpp ****     }
+ 501              		.loc 1 46 0
+ 502 0244 BF010000 		movl	$1, %edi	#,
+ 502      00
+ 503 0249 E8000000 		call	exit@PLT	#
+ 503      00
+ 504              	.LVL35:
+ 505              		.cfi_endproc
+ 506              	.LFE311:
+ 508              		.section	.text.unlikely
+ 509              	.LCOLDE8:
+ 510              		.section	.text.startup
+ 511              	.LHOTE8:
+ 512              		.globl	C
+ 513              		.bss
+ 514              		.align 32
+ 517              	C:
+ 518 0000 00000000 		.zero	13440000
+ 518      00000000 
+ 518      00000000 
+ 518      00000000 
+ 518      00000000 
+ 519              		.globl	B
+ 520              		.align 32
+ 523              	B:
+ 524 cd1400 00000000 		.zero	12800000
+ 524      00000000 
+ 524      00000000 
+ 524      00000000 
+ 524      00000000 
+ 525              		.globl	A
+ 526              		.align 32
+ 529              	A:
+ 530 1906400 00000000 		.zero	16800000
+ 530      00000000 
+ 530      00000000 
+ 530      00000000 
+ 530      00000000 
+ 531              		.section	.rodata.cst4,"aM",@progbits,4
+ 532              		.align 4
+ 533              	.LC0:
+ 534 0000 00000030 		.long	805306368
+ 535              		.section	.rodata.cst8,"aM",@progbits,8
+ 536              		.align 8
+ 537              	.LC6:
+ 538 0000 00000000 		.long	0
+ 539 0004 00408F40 		.long	1083129856
+ 540              		.text
+ 541              	.Letext0:
+ 542              		.section	.text.unlikely
+ 543              	.Letext_cold0:
+ 544              		.file 5 "/usr/include/c++/5/type_traits"
+ 545              		.file 6 "/usr/include/c++/5/cstdint"
+ 546              		.file 7 "/usr/include/c++/5/ctime"
+ 547              		.file 8 "<built-in>"
+ 548              		.file 9 "/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h"
+ 549              		.file 10 "/usr/include/c++/5/ratio"
+ 550              		.file 11 "/usr/include/x86_64-linux-gnu/bits/types.h"
+ 551              		.file 12 "/usr/include/x86_64-linux-gnu/bits/stdint-intn.h"
+ 552              		.file 13 "/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h"
+ 553              		.file 14 "/usr/include/stdint.h"
+ 554              		.file 15 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h"
+ 555              		.file 16 "/usr/include/x86_64-linux-gnu/bits/types/clock_t.h"
+ 556              		.file 17 "/usr/include/x86_64-linux-gnu/bits/types/time_t.h"
+ 557              		.file 18 "/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h"
+ 558              		.file 19 "/usr/include/time.h"
+ 559              		.file 20 "/usr/include/x86_64-linux-gnu/bits/libio.h"
+ 560              		.file 21 "/usr/include/stdio.h"
